@@ -1,2 +1,2 @@
-# Web
-This folder is designated for web application code.
+# ProMo-Sense
+This repository is used for development and version control of ProMo-Sense.
