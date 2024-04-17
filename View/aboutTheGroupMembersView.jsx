@@ -1,7 +1,7 @@
 import React from "react";
 
 export default
-function aboutTheGroupMembers(props){
+function aboutTheGroupMembersView(props){
    
     function goesToEmailACB(email){
         window.location.href = `mailto:${email}`;
@@ -23,7 +23,7 @@ function aboutTheGroupMembers(props){
             <p>sasalah@kth.se</p><br />
             <p><button onClick={() => goesToEmailACB("kazimov@kth.se")} >Contact</button></p>
         </div>
-        
+       
         <div className=" about_per2">
             <h4>Ali Kazimov</h4><br />
             <div className="about_per2_image"></div><br />
@@ -56,8 +56,19 @@ function aboutTheGroupMembers(props){
             <p><button onClick={() => goesToEmailACB("kazimov@kth.se")} >Contact</button></p>
             
         </div>
-        </div>
+       
+       
+        <div className=" about_per5">
+            <h4>Daniel Lejonstad</h4><br />
+            <div className="about_per4_image"></div><br />
+            {   }
+            <p>Co Leader & Developer</p>
+            <p>ernman@kth.se</p><br />
+            <p><button onClick={() => goesToEmailACB("kazimov@kth.se")} >Contact</button></p>
+            
         
+        </div>
+        </div>
         </div>
         
             );

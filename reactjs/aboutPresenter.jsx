@@ -1,6 +1,6 @@
-import aboutTheGroupMembers from "../View/aboutTheGroupMembers";
+import aboutTheGroupMembersView from "../View/aboutTheGroupMembersView";
 import { observer } from "mobx-react-lite";
-import NavbarView from "../views/navBarView";
+
 import { auth } from "../firebaseModel";
 import { signInWithPopup, GoogleAuthProvider,signOut} from "firebase/auth";
 
@@ -54,7 +54,7 @@ export default observer(
         />
         </div>
         <div>
-            <aboutTheGroupMembers></aboutTheGroupMembers>
+            <aboutTheGroupMembersView></aboutTheGroupMembersView>
 
 
 
