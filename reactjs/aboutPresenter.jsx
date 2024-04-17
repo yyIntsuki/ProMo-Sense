@@ -1,4 +1,4 @@
-import aboutTheGroupMembersView from "../View/aboutTheGroupMembersView";
+import AboutTheGroupMembersView from "../View/aboutTheGroupMembersView";
 import { observer } from "mobx-react-lite";
 
 import { auth } from "../firebaseModel";

@@ -1,7 +1,7 @@
 import React from "react";
 
 export default
-function aboutTheGroupMembersView(props){
+function AboutTheGroupMembersView(props){
    
     function goesToEmailACB(email){
         window.location.href = `mailto:${email}`;
