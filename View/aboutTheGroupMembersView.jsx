@@ -42,7 +42,7 @@ function AboutTheGroupMembersView(props){
         
             {    }
             <p>Group Leader & Developer</p>
-            <p>gay.ll</p><br />
+            <p>ludwigas@kth.se</p><br />
             <p><button onClick={() => goesToEmailACB("kazimov@kth.se")} >Contact</button></p>
         
         </div>
@@ -52,7 +52,7 @@ function AboutTheGroupMembersView(props){
             <div className="about_per4_image"></div><br />
             {   }
             <p>Co Leader & Developer</p>
-            <p>ernman@kth.se</p><br />
+            <p>97peter.l@gmail.com</p><br />
             <p><button onClick={() => goesToEmailACB("kazimov@kth.se")} >Contact</button></p>
             
         </div>
@@ -63,7 +63,7 @@ function AboutTheGroupMembersView(props){
             <div className="about_per4_image"></div><br />
             {   }
             <p>Co Leader & Developer</p>
-            <p>ernman@kth.se</p><br />
+            <p>daniel.lejonstad@hotmail.com</p><br />
             <p><button onClick={() => goesToEmailACB("kazimov@kth.se")} >Contact</button></p>
             
         

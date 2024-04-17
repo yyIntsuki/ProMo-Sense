@@ -54,8 +54,7 @@ export default observer(
         />
         </div>
         <div>
-            <aboutTheGroupMembersView></aboutTheGroupMembersView>
-
+            <AboutTheGroupMembersView></AboutTheGroupMembersView>
 
 
         </div>
