@@ -1,19 +1,19 @@
 /* CSS for about */
 
 .about {
-	text-align: center;
+    text-align: center;
 }
 
 .about_row {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	/* Define five equal columns */
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    /* Define five equal columns */
 }
 
 .about_image {
-	width: 200px;
-	height: 200px;
-	object-fit: cover;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
 }
 
 .about_per1,
@@ -21,9 +21,9 @@
 .about_per3,
 .about_per4,
 .about_per5 {
-	border-style: groove;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
+    border-style: groove;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

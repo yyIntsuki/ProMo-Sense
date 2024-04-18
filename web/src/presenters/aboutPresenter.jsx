@@ -18,7 +18,7 @@ export default observer(function About(props) {
 				props.props.UserState.loginStatus = true;
 				console.log("LogIn successfully");
 			})
-			.catch((error) => {});
+			.catch((error) => { });
 	}
 
 	function handleLogoutACB() {
