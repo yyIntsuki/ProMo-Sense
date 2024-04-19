@@ -1,13 +1,33 @@
-/* CSS for about */
+/* Common */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-.about {
-    text-align: center;
+/* About page */
+.about_wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #181818;
+    color: #cccccc;
+}
+
+
+.about_group_members {
+    display: flex;
+    background-color: #1f1f1f;
 }
 
 .about_row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    /* Define five equal columns */
 }
 
 .about_image {
@@ -16,16 +36,13 @@
     object-fit: cover;
 }
 
-.about_group_members {
-    display: flex;
-}
-
 .about_per1,
 .about_per2,
 .about_per3,
 .about_per4,
 .about_per5 {
-    border-style: groove;
+    width: 300px;
+    border: 0px groove;
     display: flex;
     flex-direction: column;
     align-items: center;
