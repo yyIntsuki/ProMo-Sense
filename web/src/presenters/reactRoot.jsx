@@ -1,21 +1,28 @@
-import React from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import AboutTheGroupMembersView from './AboutTheGroupMembersView';
+import { createHashRouter, RouterProvider } from "react-router-dom";
+import {observer} from 'mobx-react-lite'
+import About from "./aboutPresenter";
 
-function AppRouter() {
-    const router = createBrowserRouter([
-        {
-            path: "/",
-            element: <AboutTheGroupMembersView />,
-        },
-        // You can add more routes here as needed
-    ]);
 
-    return (
-        <div className="App">
-            <RouterProvider router={router} />
-        </div>
-    );
-}
+export default observer(
+    function ReactRoot(props){
 
-export default AppRouter;
+        function makeRouter(){
+            return createHashRouter([
+                
+                {
+                    path: "/about",
+                    element: <About props = {props.model}/>
+                },
+                
+            ])
+        }
+            
+
+            return((
+            <div className="root" >
+               <RouterProvider router={makeRouter(props)} />
+            </div>
+           )
+            ) 
+        }
+ )
