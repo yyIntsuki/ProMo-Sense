@@ -1,5 +1,5 @@
 import AboutView from "../views/aboutView";
-// import { auth } from "../firebaseModel"; // UNDEFINED
+import { auth } from "../firebaseModel";
 import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
 
 export default function About(props) {
@@ -17,7 +17,7 @@ export default function About(props) {
                 props.props.UserState.loginStatus = true;
                 console.log("LogIn successfully");
             })
-            .catch((error) => { });
+            .catch((error) => { console.error(error); });
     }
 
     function handleLogoutACB() {
@@ -27,9 +27,7 @@ export default function About(props) {
                 props.props.UserState.user = null;
                 console.log("LogOut successfully");
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((error) => { console.error(error); });
     }
 
     return (
