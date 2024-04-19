@@ -6,7 +6,7 @@ export default function AboutView(props) {
 	}
 
 	return (
-		<div className="about-group-members">
+		<div className="about_group_members">
 			<div className="about_per1">
 				<h4>Salahudin Salah</h4><br />
 				<img src="/src/assets/salah.JPG" alt="Salahudin Salah" className="about_image" /><br />
