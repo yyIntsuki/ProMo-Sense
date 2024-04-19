@@ -1,9 +1,7 @@
 import "../css/style.css";
 
-export default function AboutView(props) {
-    function goesToEmailACB(email) {
-        window.location.href = `mailto:${email}`;
-    }
+export default function AboutView() {
+    function goesToEmailACB(email) { window.location.href = `mailto:${email}`; }
 
     return (
         <div className="about_wrapper">

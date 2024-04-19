@@ -1,6 +1,5 @@
 import AboutView from "../views/aboutView";
-import { auth } from "../firebaseModel";
-import { signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { auth, signInWithPopup, GoogleAuthProvider, signOut } from "../firebaseModel";
 
 export default function About(props) {
     function handleLoginACB() {
