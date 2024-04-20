@@ -9,7 +9,7 @@ export default function AboutView() {
                 <div className="about_per1">
                     <h4>Salahudin Salah</h4><br />
                     <img src="/src/assets/salah.JPG" alt="Salahudin Salah" className="about_image" /><br />
-                    <p>Developer</p>
+                    <p>Product Owner & Developer</p>
                     <p>sasalah@kth.se</p><br />
                     <p><button onClick={() => goesToEmailACB("sasalah@kth.se")}>Contact</button></p>
                 </div>
@@ -25,7 +25,7 @@ export default function AboutView() {
                 <div className="about_per3">
                     <h4>Ludwig Ask</h4><br />
                     <img src="src/assets/ludwig.jpg" alt="Ludwig Ask" className="about_image" /><br />
-                    <p>Group Leader & Developer</p>
+                    <p>Developer</p>
                     <p>ludwigas@kth.se</p><br />
                     <p><button onClick={() => goesToEmailACB("ludwigas@kth.se")}>Contact</button></p>
                 </div>
@@ -33,7 +33,7 @@ export default function AboutView() {
                 <div className="about_per4">
                     <h4>Peter Li</h4><br />
                     <img src="src/assets/peter.jpg" alt="Peter Li" className="about_image" /><br />
-                    <p>Group Leader & Developer</p>
+                    <p>Developer</p>
                     <p>pli2@kth.se</p><br />
                     <p><button onClick={() => goesToEmailACB("pli2@kth.se")}>Contact</button></p>
                 </div>
