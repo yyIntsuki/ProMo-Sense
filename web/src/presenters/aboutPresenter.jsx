@@ -1,11 +1,10 @@
 import AboutView from "../views/aboutView";
-import { auth, signInWithPopup, GoogleAuthProvider, signOut } from "../firebaseModel";
+import { auth, provider, signInWithPopup, signOut } from "../firebaseModel";
 
 export default function About(props) {
     function handleLoginACB() {
         console.log(props);
 
-        const provider = new GoogleAuthProvider();
         signInWithPopup(auth, provider)
             .then((result) => {
                 console.log("Sign In User: ");
