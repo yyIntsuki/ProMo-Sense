@@ -40,7 +40,7 @@ export default function AboutView() {
 
                 <div className="about_per5">
                     <h4>Daniel Lejonstad</h4><br />
-                    <img src="src/assets/daniel.jpg" alt="Daniel Lenjonstad" className="about_image" /><br />
+                    <img src="src/assets/daniel.jpg" alt="Daniel Lejonstad" className="about_image" /><br />
                     <p>Scrum Master & Developer</p>
                     <p>daniel.lejonstad@hotmail.com</p><br />
                     <p><button onClick={() => goesToEmailACB("daniel.lejonstad@hotmail.com")}>Contact</button></p>
