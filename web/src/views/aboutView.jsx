@@ -15,7 +15,7 @@ export default function AboutView() {
                 </div>
 
                 <div className="about_per2">
-                    <h4>Ali Kazimovezz</h4><br />
+                    <h4>Ali Kazimov</h4><br />
                     <img src="src/assets/ali.png" alt="Ali Kazimov" className="about_image" /><br />
                     <p>Developer</p>
                     <p>kazimov@kth.se</p><br />
