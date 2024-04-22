@@ -2,7 +2,7 @@ import AboutView from "../views/aboutView";
 import { auth, provider, signInWithPopup, signOut } from "../firebaseModel";
 
 export default function About(props) {
-    function handleLoginACB() {
+    function handleLogin() {
         console.log(props);
 
         signInWithPopup(auth, provider)
@@ -18,7 +18,7 @@ export default function About(props) {
             .catch((error) => { console.error(error); });
     }
 
-    function handleLogoutACB() {
+    function handleLogout() {
         signOut(auth)
             .then(() => {
                 props.props.UserState.loginStatus = false;
@@ -32,7 +32,7 @@ export default function About(props) {
         <div>
             <div>
                 {/* UNDEFINED NAVBARVIEW */}
-                {/* <NavbarView user={props.props.UserState.user} loginStatus={props.props.UserState.loginStatus} setLoginStatus={handleLoginACB} setLogoutStatus={handleLogoutACB} /> */}
+                {/* <NavbarView user={props.props.UserState.user} loginStatus={props.props.UserState.loginStatus} setLoginStatus={handleLogin} setLogoutStatus={handleLogout} /> */}
             </div>
             <div>
                 <AboutView />
