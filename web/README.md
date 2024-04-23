@@ -19,3 +19,15 @@ or
 ```
 npm run start
 ```
+
+### Build and deploy to Firebase
+
+```
+npm run build
+```
+
+then
+
+```
+firebase deploy
+```
