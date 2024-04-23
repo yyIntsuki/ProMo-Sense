@@ -3,10 +3,10 @@ import { auth, provider } from "../firebaseModel";
 import { signInWithPopup } from "firebase/auth";
 
 export default function LogIn() {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState();
 
-  const whenToLogIn = (e) => {
-    e.preventDefault();
+  async function handleLogin(event) {
+    event.preventDefault();
 
     signInWithPopup(auth, provider)
       .then((result) => {
@@ -16,14 +16,11 @@ export default function LogIn() {
       .catch((error) => {
         console.error("An error has occurred during login:", error);
       });
-  };
+  }
 
   return (
-    <div className="logga in">
-      <form onSubmit={whenToLogIn}>
-        <h1>Log in</h1>
-        <button type="submit">Log in</button>
-      </form>
+    <div className="login_wrapper">
+      <h1 onClick={handleLogin}>Log in with Google</h1>
     </div>
-  );
+  )
 }

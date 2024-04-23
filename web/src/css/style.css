@@ -26,10 +26,11 @@ body {
     justify-content: space-evenly;
 }
 
-/* App, Project, About */
+/* App, Project, About, Login */
 .app_wrapper,
 .project_wrapper,
-.about_wrapper {
+.about_wrapper,
+.login_wrapper {
     height: 70vh;
     display: flex;
     flex-direction: column;
