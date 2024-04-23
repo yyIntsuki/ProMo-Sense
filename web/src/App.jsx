@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import About from "./presenters/aboutPresenter";
 import Home from "./presenters/homePresenter";
 import  AboutProject  from "./presenters/aboutProjectPresenter"
+import  LogIn from "./presenters/loginPresenter"
+
+
 export default class App extends React.Component {
 	render() {
 		return (
@@ -12,7 +15,9 @@ export default class App extends React.Component {
 					<Route exact path="/home" element={<Home />} />
 					<Route exact path="/about" element={<About />} />
 					<Route exact path="/aboutProject" element={< AboutProject  />} />
-				</Routes>
+					<Route exact path="/login" element={< LogIn   />} />
+			</Routes>
+
 			</Router>
 		);
 	}

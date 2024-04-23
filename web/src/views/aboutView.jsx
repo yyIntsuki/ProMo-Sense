@@ -7,7 +7,7 @@ export default function AboutView() {
         <div className="about_wrapper">
             <div className="about_group_members">
                 <div className="about_per1">
-                    <h4>Salahudin Salah</h4><br />
+                    <h4>Salahudin Salajh</h4><br />
                     <img src="/src/assets/salah.JPG" alt="Salahudin Salah" className="about_image" /><br />
                     <p>Product Owner & Developer</p>
                     <p>sasalah@kth.se</p><br />
