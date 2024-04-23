@@ -4,13 +4,33 @@
 body {
     margin: 0;
     font-family: 'Poppins';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
-/* About page */
+/* Header */
+.header-wrapper {
+    height: 10vh;
+    padding: 0 25px 0 25px;
+    background-color: #1f1f1f;
+    color: #cccccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Footer */
+.footer-wrapper {
+    height: 20vh;
+    background-color: #1f1f1f;
+    color: #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* App, Project, About */
+.app_wrapper,
+.project_wrapper,
 .about_wrapper {
-    height: 100vh;
+    height: 70vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -19,32 +39,7 @@ body {
     color: #cccccc;
 }
 
-.home-button {
-    padding: 10px 20px;
-    margin: 10px;
-    background-color: #333333; /* Darker button background */
-    color: #ffffff; /* White text on buttons */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.home-button:hover {
-    background-color: #444444; /* Slightly lighter on hover */
-}
-
-.home-wrapper {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #181818; /* Dark background */
-    color: #cccccc; /* Light text */
-}
-
-
+/* About page */
 .about_group_members {
     display: flex;
     background-color: #1f1f1f;
@@ -73,5 +68,5 @@ body {
     align-items: center;
     justify-content: center;
 
-    
+
 }

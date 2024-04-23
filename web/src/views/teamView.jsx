@@ -1,6 +1,6 @@
 import "../css/style.css";
 
-export default function AboutView() {
+export default function TeamView() {
     function handleClickToEmail(email) { window.location.href = `mailto:${email}`; }
 
     return (

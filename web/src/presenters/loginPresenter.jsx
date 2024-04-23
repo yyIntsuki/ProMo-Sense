@@ -1,9 +1,9 @@
-import React, { useState } from "react"; // Import useState from React
+import { useState } from "react";
 import { auth, provider } from "../firebaseModel";
 import { signInWithPopup } from "firebase/auth";
 
-const LogIn = () => {
-  const [user, setUser] = useState(""); 
+export default function LogIn() {
+  const [user, setUser] = useState("");
 
   const whenToLogIn = (e) => {
     e.preventDefault();
@@ -11,7 +11,7 @@ const LogIn = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         const user = result.user;
-        setUser(user); 
+        setUser(user);
       })
       .catch((error) => {
         console.error("An error has occurred during login:", error);
@@ -26,6 +26,4 @@ const LogIn = () => {
       </form>
     </div>
   );
-};
-
-export default LogIn;
+}
