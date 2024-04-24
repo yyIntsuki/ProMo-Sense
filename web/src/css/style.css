@@ -3,11 +3,12 @@
 
 body {
     margin: 0;
+    padding: 0;
     font-family: 'Poppins';
 }
 
 /* Header */
-.header-wrapper {
+.header_wrapper {
     height: 10vh;
     padding: 0 25px 0 25px;
     background-color: #1f1f1f;
@@ -17,13 +18,25 @@ body {
 }
 
 /* Footer */
-.footer-wrapper {
+.footer_wrapper {
     height: 20vh;
     background-color: #1f1f1f;
     color: #cccccc;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+}
+
+.footer_wrapper div {
+    width: 33vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer_wrapper :nth-child(2) {
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
 }
 
 /* App, Project, About, Login */
@@ -68,6 +81,4 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
-
 }

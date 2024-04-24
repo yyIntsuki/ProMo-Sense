@@ -2,6 +2,8 @@
 
 This folder is designated for web application code.
 
+Live on https://promosencegrupp9-4bbcc.web.app/
+
 ## Project setup
 
 ```
@@ -18,4 +20,16 @@ or
 
 ```
 npm run start
+```
+
+### Build and deploy to Firebase
+
+```
+npm run build
+```
+
+then
+
+```
+firebase deploy
 ```

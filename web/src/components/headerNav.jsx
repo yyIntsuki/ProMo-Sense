@@ -6,7 +6,7 @@ export default function Header() {
     function goToLogin() { navigate('/login'); }
 
     return (
-        <div className="header-wrapper">
+        <div className="header_wrapper">
             <div className="title">
                 <h1>ProMo-Sense</h1>
             </div>
