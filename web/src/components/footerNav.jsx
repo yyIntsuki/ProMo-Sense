@@ -8,7 +8,7 @@ export default function Footer() {
     function goToProject() { navigate('/project'); }
 
     return (
-        <div className="footer-wrapper">
+        <div className="footer_wrapper">
             <div onClick={goToApp}><h1>App</h1></div>
             <div onClick={goToProject}><h1>The Project</h1></div>
             <div onClick={goToTeam}><h1>The Team</h1></div>
