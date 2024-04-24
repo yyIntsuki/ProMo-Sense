@@ -27,7 +27,7 @@ body {
     justify-content: space-evenly;
 }
 
-/* App, Project, About, Login */
+/* Existing styles */
 .app_wrapper,
 .project_wrapper,
 .about_wrapper,
@@ -41,6 +41,12 @@ body {
     color: #cccccc;
 }
 
+/* New style for smaller text in project view */
+.project_wrapper h1 {
+    font-size: 16px; /* Adjust the font size as needed */
+    text-align: center; /* Center the text for better readability */
+    padding: 0 20px; /* Add some padding to handle longer text */
+}
 /* About page */
 .about_group_members {
     display: flex;
