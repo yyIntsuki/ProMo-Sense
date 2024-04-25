@@ -1,3 +1,5 @@
+import time
+
 # gpiozero Documentation: https://gpiozero.readthedocs.io/en/latest/api_input.html#gpiozero.MotionSensor
 from gpiozero import MotionSensor
 
@@ -8,9 +10,15 @@ from gpiozero import MotionSensor
 
 PIR_pin_3 = 17  # GPIO17, pin 11 on Raspberry
 
-# MAIN
+# Pin selection
 pir = MotionSensor(PIR_pin_3)
 
+# Sensor initialization
+print("Sensor initializing, Please wait for one minute...")
+time.sleep(60)
+print("Initializing complete.")
+
+# Detection loop
 while True:
     print("Waiting for motion...")
     pir.wait_for_motion()
