@@ -6,4 +6,4 @@ initializeApp(firebaseConfig);
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
 
-export { auth, provider, signInWithPopup, signOut }
+export { auth, provider, signInWithPopup, signOut, GoogleAuthProvider }

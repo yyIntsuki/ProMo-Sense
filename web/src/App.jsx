@@ -6,6 +6,9 @@ import ProMoSense from "./presenters/appPresenter";
 import Project from "./presenters/projectPresenter";
 import  LogInForApp from "./presenters/loginPresenter"
 
+import LogInForApp from "./presenters/LoginRedirectApp";
+
+
 export default function App() {
 	return (
 		<Router>
@@ -15,7 +18,7 @@ export default function App() {
 				<Route exact path="/team" element={<Team />} />
 				<Route exact path="/project" element={<Project />} />
 				<Route exact path="/login" element={< LogInForApp />} />
-				<Route exact path="/app" element={< App />} />
+
 			</Routes>
 			<Footer />
 		</Router>
