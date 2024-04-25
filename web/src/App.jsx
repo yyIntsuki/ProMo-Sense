@@ -4,8 +4,6 @@ import Footer from "./components/footerNav";
 import Team from "./presenters/teamPresenter";
 import ProMoSense from "./presenters/appPresenter";
 import Project from "./presenters/projectPresenter";
-import  LogInForApp from "./presenters/loginPresenter"
-
 import LogInForApp from "./presenters/LoginRedirectApp";
 
 
