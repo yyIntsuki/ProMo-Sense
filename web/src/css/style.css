@@ -72,15 +72,21 @@ body {
     object-fit: cover;
 }
 
-.about_per1,
-.about_per2,
-.about_per3,
-.about_per4,
-.about_per5 {
+.about_person {
     width: 300px;
-    border: 0px groove;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+}
+
+.about_person h4 {
+    height: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.about_person h5 {
+    padding: 5px;
+    border: 1px groove #cccccc;
+    border-radius: 5px;
 }
