@@ -44,6 +44,8 @@ body {
 .project_wrapper,
 .about_wrapper,
 .login_wrapper {
+    box-sizing: border-box;
+    padding: 20px;
     height: 70vh;
     display: flex;
     flex-direction: column;
