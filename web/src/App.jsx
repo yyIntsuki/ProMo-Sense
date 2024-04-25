@@ -1,18 +1,22 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import About from "./presenters/aboutPresenter";
-import Home from "./presenters/homePresenter";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Header from "./components/headerNav";
+import Footer from "./components/footerNav";
+import Team from "./presenters/teamPresenter";
+import ProMoSense from "./presenters/appPresenter";
+import Project from "./presenters/projectPresenter";
+import LogIn from "./presenters/loginPresenter";
 
-export default class App extends React.Component {
-	render() {
-		return (
-			<Router>
-				<Routes>
-					<Route path="/" element={<Navigate replace to="/about" />} />
-					<Route exact path="/home" element={<Home />} />
-					<Route exact path="/about" element={<About />} />
-				</Routes>
-			</Router>
-		);
-	}
+export default function App() {
+	return (
+		<Router>
+			<Header />
+			<Routes>
+				<Route path="/" element={<ProMoSense />} />
+				<Route exact path="/team" element={<Team />} />
+				<Route exact path="/project" element={<Project />} />
+				<Route exact path="/login" element={< LogIn />} />
+			</Routes>
+			<Footer />
+		</Router>
+	);
 }

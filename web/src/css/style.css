@@ -1,13 +1,67 @@
-/* CSS for about */
+/* Common */
+@import url('https://fonts.googleapis.com/css2?family=Poppins');
 
-.about {
-    text-align: center;
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+}
+
+/* Header */
+.header_wrapper {
+    height: 10vh;
+    padding: 0 25px 0 25px;
+    background-color: #1f1f1f;
+    color: #cccccc;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Footer */
+.footer_wrapper {
+    height: 20vh;
+    background-color: #1f1f1f;
+    color: #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.footer_wrapper div {
+    width: 33vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer_wrapper :nth-child(2) {
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+}
+
+/* App, Project, About, Login */
+.app_wrapper,
+.project_wrapper,
+.about_wrapper,
+.login_wrapper {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #181818;
+    color: #cccccc;
+}
+
+/* About page */
+.about_group_members {
+    display: flex;
+    background-color: #1f1f1f;
 }
 
 .about_row {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    /* Define five equal columns */
 }
 
 .about_image {
@@ -21,7 +75,8 @@
 .about_per3,
 .about_per4,
 .about_per5 {
-    border-style: groove;
+    width: 300px;
+    border: 0px groove;
     display: flex;
     flex-direction: column;
     align-items: center;
