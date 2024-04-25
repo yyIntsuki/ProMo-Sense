@@ -4,13 +4,13 @@ import time
 from gpiozero import MotionSensor
 
 ## PIR Sensor datasheet: https://docs.rs-online.com/6a22/0900766b8125a3ed.pdf
+## PIN Positions, top-left: GND
 # PIR pin_1 - GND: Ground: 0 V
 # PIR pin_2 - V_cc: Supply Voltage: 5V
-# PIR pin_3 - OUT: PIR signaling; HIGH = movement/LOW = no movement
+# PIR pin_3 - OUT: PIR signaling; HIGH = movement / LOW = no movement
 
+# Pin configuration
 PIR_pin_3 = 17  # GPIO17, pin 11 on Raspberry
-
-# Pin selection
 pir = MotionSensor(PIR_pin_3)
 
 # Sensor initialization
