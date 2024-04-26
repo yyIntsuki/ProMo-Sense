@@ -5,15 +5,26 @@ export default function App() {
 	const [volume, setVolume] = useState(0.5);
 	const audioRef = useRef(null);
 
-	const handleAudioSelection = (e) => {
+
+	const handleAudioSelection = async (e) => {
 		const selectedUrl = e.target.value;
 		setSelectedAudioUrl(selectedUrl);
+		
+		try {
+			const db = firebase.database();
+			await db.child("selected-audio-url").set(selectedUrl);
+		
+		} catch (error) {
+			console.error("Firebase operation failed:", error);
+		}
+		
 		if (audioRef.current) {
 			audioRef.current.pause();
 			audioRef.current.src = selectedUrl;
 			audioRef.current.load();
 		}
 	};
+
 
 	const playAudio = () => {
 		if (audioRef.current) {

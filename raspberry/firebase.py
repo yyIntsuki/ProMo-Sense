@@ -5,9 +5,11 @@ import firebaseConfig
 firebase = pyrebase.initialize_app(firebaseConfig.config)
 db = firebase.database()
 
+
+
 # Push data to firebase
 data = {
-    "firstName": "John",
+    "firstName": "Jon",
     "lastName": "Cena",
 }
 db.child("dummy-data").child("set").set(data)
