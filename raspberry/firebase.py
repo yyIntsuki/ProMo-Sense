@@ -6,12 +6,16 @@ firebase = pyrebase.initialize_app(firebaseConfig.config)
 db = firebase.database()
 
 # Push data to firebase
-data = {
-    "firstName": "John",
-    "lastName": "Cena",
-}
-db.child("dummy-data").child("set").set(data)
+# data = {
+#    "firstName": "John",
+#    "lastName": "Cena",
+# }
+# db.child("dummy-data").child("set").set(data)
 
 # Fetch data from firebase
-response = db.child("dummy-data").child("set").get()
-print(response.val())
+##response = db.child("dummy-data").child("set").get()
+##print(response.val())
+
+
+def push_to_db(component_name, data):
+    db.child("data").child(component_name).set(data)
