@@ -1,0 +1,13 @@
+﻿Designator,Footprint,Quantity,Value,LCSC Part #
+5V,PinHeader_1x01_P2.54mm_Vertical,1,5V,
+Audio Jack,Jack_3.5mm_Ledino_KB3SPRS_Horizontal,1,AudioJack,
+C1,0805,1,0.22,
+C2,CP_Elec_6.3x5.4,1,47,
+C3,0805,1,0.47,
+C4,CP_Elec_6.3x5.4,1,220,
+GND,PinHeader_1x01_P2.54mm_Vertical,1,GND,
+LM386,MSOP-8_3x3mm_P0.65mm,1,LM386,
+R1,0805,1,10,
+RV1,Potentiometer_Piher_PT-10-H05_Horizontal,1,10k,
+Vin,PinHeader_1x02_P2.54mm_Vertical,1,GND,
+Vout,PinHeader_1x01_P2.54mm_Vertical,1,Vout,
