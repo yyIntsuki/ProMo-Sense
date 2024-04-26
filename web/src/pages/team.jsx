@@ -3,6 +3,7 @@ export default function Team() {
 
     return (
         <div className="about_wrapper">
+            <h1>About the team</h1>
             <div className="about_group_members">
                 <div className="about_person">
                     <h4>Salahudin Salah</h4>
