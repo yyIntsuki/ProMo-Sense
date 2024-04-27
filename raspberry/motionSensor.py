@@ -42,13 +42,13 @@ def status(init=True, detected=False):
     }
 
 
-# Sensor alive status with threading
+# Sensor alive status with threading, refreshes every 30 seconds to save quota
 def timer():
     global current_running_time
     while True:
         push_to_db(component_name, status())
-        sleep(1)
-        current_running_time += 1
+        sleep(30)
+        current_running_time += 30
 
 
 # Sensor initialization
