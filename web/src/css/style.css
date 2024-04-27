@@ -39,8 +39,7 @@ body {
     border-right: 1px solid #cccccc;
 }
 
-/* App, Project, About, Login */
-.app_wrapper,
+/* Project, About, Login */
 .project_wrapper,
 .about_wrapper,
 .login_wrapper {
@@ -101,17 +100,32 @@ body {
 }
 
 /* App */
-.app_wrapper .item {
-    width: 33vw;
+.app_wrapper {
+    box-sizing: border-box;
+    padding: 20px;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    gap: 10vw;
+    background-color: #181818;
+    color: #cccccc;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.app_wrapper .app_category .item {
+    width: 15vw;
     display: flex;
     flex-direction: column;
 }
 
-.app_wrapper .item p {
+.app_wrapper .app_category .item p {
+    display: flex;
+    justify-content: space-between;
     height: 10px;
 }
 
-.app_wrapper .item button {
+.app_wrapper .app_category .item button {
     background-color: #1f1f1f;
     color: #cccccc;
     border: none;
