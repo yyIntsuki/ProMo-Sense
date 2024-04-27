@@ -54,7 +54,7 @@ def timer():
 # Sensor initialization
 push_to_db(component_name, status(init=False))
 print("Sensor initializing, Please wait for one minute...")
-sleep(1)
+sleep(60)
 push_to_db(component_name, status())
 print("Initializing complete.")
 
