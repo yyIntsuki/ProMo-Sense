@@ -125,6 +125,10 @@ body {
     height: 10px;
 }
 
+.app_wrapper .app_category .item span {
+    color: white;
+}
+
 .app_wrapper .app_category .item button {
     background-color: #1f1f1f;
     color: #cccccc;

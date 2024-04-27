@@ -58,7 +58,7 @@ export default function App() {
 				<div className="item">
 					<h2 className="item_title">Motion sensor</h2>
 					<p>STATUS: <span>{data.pir_on ? 'ON' : 'OFF'}</span></p>
-					<p>INITIALIZED: <span>{data.pir_detect ? 'FINISHED' : 'PENDING'}</span></p>
+					<p>INITIALIZED: <span>{data.pir_detect ? 'TRUE' : 'FALSE'}</span></p>
 					<p>DETECTED: <span>{data.pir_detect ? 'TRUE' : 'FALSE'}</span></p>
 				</div>
 
