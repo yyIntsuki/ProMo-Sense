@@ -2,4 +2,4 @@
 __pycache__
 
 # Firebase
-firebaseConfig.py
+firebase_config.py

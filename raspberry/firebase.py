@@ -4,10 +4,10 @@ Provides functions for firebase access
 """
 
 import pyrebase
-import firebaseConfig
+from firebase_config import config
 
 # Initialize firebase app
-firebase = pyrebase.initialize_app(firebaseConfig.config)
+firebase = pyrebase.initialize_app(config)
 db = firebase.database()
 
 
