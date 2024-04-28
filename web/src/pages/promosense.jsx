@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { db, ref, set } from '../firebaseModel'; 
+import { database, ref, set } from '../firebaseModel'; 
 
 export default function App() {
     const [selectedAudioUrl, setSelectedAudioUrl] = useState('');
@@ -41,7 +41,7 @@ export default function App() {
 
     const setVolumeInDatabase = () => {
 		console.log('setVolumeInDatabase function called'); 
-		const volumeRef = ref(db, 'audioSettings/volume');
+		const volumeRef = ref(database, 'audioSettings/volume');
 		set(volumeRef, volume)
 			.then(() => {
 				console.log('Volume saved to Firebase:', volume);
