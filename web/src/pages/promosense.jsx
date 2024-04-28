@@ -22,13 +22,13 @@ export default function App() {
     }
 
     function increaseVolume() {
-        const newVolume = Number((volume + 0.1).toFixed(2));
+        const newVolume = Math.min(1, Number((volume + 0.1).toFixed(2)));
         setVolume(newVolume);
         if (audioRef.current) { audioRef.current.volume = newVolume; }
     }
 
     function decreaseVolume() {
-        const newVolume = Number((volume - 0.1).toFixed(2));
+        const newVolume = Math.max(0, Number((volume - 0.1).toFixed(2)));
         setVolume(newVolume);
         if (audioRef.current) { audioRef.current.volume = newVolume; }
     }
