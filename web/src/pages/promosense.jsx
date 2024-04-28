@@ -22,13 +22,13 @@ export default function App() {
     }
 
     function increaseVolume() {
-        const newVolume = Math.min(1, volume + 0.1);
+        const newVolume = Number((volume + 0.1).toFixed(2));
         setVolume(newVolume);
         if (audioRef.current) { audioRef.current.volume = newVolume; }
     }
 
     function decreaseVolume() {
-        const newVolume = Math.max(0, volume - 0.1);
+        const newVolume = Number((volume - 0.1).toFixed(2));
         setVolume(newVolume);
         if (audioRef.current) { audioRef.current.volume = newVolume; }
     }
@@ -36,7 +36,7 @@ export default function App() {
     function setVolumeInDatabase() {
         const volumeRef = ref(database, 'data/audio_module/volume');
         set(volumeRef, volume)
-            .then(() => { console.log('Volume saved to Firebase:', volume); })
+            .then(() => { console.log('Volume saved to database:', volume); })
             .catch(error => { console.error('Failed to set volume in database:', error); });
     }
 
