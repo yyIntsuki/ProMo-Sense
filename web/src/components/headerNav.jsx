@@ -1,7 +1,7 @@
 import "../css/style.css";
 import { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, database, ref, set } from "../firebaseModel";
+import { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
 export default function Header() {
@@ -17,23 +17,13 @@ export default function Header() {
         getRedirectResult(auth)
             .then((result) => {
                 if (result) {
-                    setCurrentUser(result.user);
-                    /* Set user to real-time database */
-                    const userRef = ref(database, "users/" + result.user.uid);
-                    return set(userRef, {
-                        firstName: result.user.displayName?.split(" ")[0],
-                        email: result.user.email,
-                        lastLogin: currentTimeInSweden()
-                    });
+                    const { user } = result;
+                    setCurrentUser(user);
+                    setUserInDatabase(user);
                 }
             })
             .catch((error) => { console.error("Error occurred when redirecting:", error.message); })
     }, [setCurrentUser]);
-
-    function currentTimeInSweden() {
-        const timeNow = new Date();
-        return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
-    }
 
     const navigate = useNavigate();
     function navigateToApp() { navigate("/"); }

@@ -5,7 +5,6 @@ import Footer from "./components/footerNav";
 import ProMoSense from "./pages/promosense";
 import Team from "./pages/team";
 import Project from "./pages/project";
-import Login from "./pages/login";
 
 export default function App() {
 	return (
@@ -16,7 +15,6 @@ export default function App() {
 					<Route path="/" element={<ProMoSense />} />
 					<Route exact path="/team" element={<Team />} />
 					<Route exact path="/project" element={<Project />} />
-					<Route exact path="/login" element={< Login />} />
 				</Routes>
 				<Footer />
 			</UserProvider>

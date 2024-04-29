@@ -1,32 +1,34 @@
-import { useState, useRef, useEffect  } from 'react';
-import { database, ref, set, get } from '../firebaseModel';
+import { useState, useRef, useEffect } from "react";
+import { setVolumeInDatabase, getVolumeFromDatabase } from "../firebaseModel";
 
 export default function App() {
-    const [selectedAudioUrl, setSelectedAudioUrl] = useState('');
+    const [selectedAudioUrl, setSelectedAudioUrl] = useState("");
     const [volume, setVolume] = useState(0.5);
     const audioRef = useRef(null);
 
-	
-	useEffect(() => {
-        const volumeRef = ref(database, 'data/audio_module/volume');
-        get(volumeRef).then((snapshot) => {
-            if (snapshot.exists()) {
-                const fetchedVolume = snapshot.val();
-                setVolume(fetchedVolume);
-                if (audioRef.current) {
-                    audioRef.current.volume = fetchedVolume;
-                }
-            } else {
-                console.log("No volume setting found in Firebase. Using default.");
-            }
-            setIsLoading(false); 
-        }).catch(error => {
-            console.error("Failed to fetch volume:", error);
-            setIsLoading(false);  
-        });
+    useEffect(() => {
+        getVolumeFromDatabase()
+            .then((value) => {
+                setVolume(value);
+                if (audioRef.current) { audioRef.current.volume = value }
+            });
     }, []);
-	
-	
+
+    function increaseVolume() {
+        const newVolume = Math.min(1, Number((volume + 0.1).toFixed(2)));
+        setVolume(newVolume);
+        if (audioRef.current) { audioRef.current.volume = newVolume; }
+    }
+
+    function decreaseVolume() {
+        const newVolume = Math.max(0, Number((volume - 0.1).toFixed(2)));
+        setVolume(newVolume);
+        if (audioRef.current) { audioRef.current.volume = newVolume; }
+    }
+
+    function applyVolume() {
+        setVolumeInDatabase(volume);
+    }
 
     function handleAudioSelection(event) {
         const selectedUrl = event.target.value;
@@ -43,34 +45,15 @@ export default function App() {
         if (audioRef.current) { audioRef.current.play(); }
     }
 
-    function increaseVolume() {
-        const newVolume = Math.min(1, Number((volume + 0.1).toFixed(2)));
-        setVolume(newVolume);
-        if (audioRef.current) { audioRef.current.volume = newVolume; }
-    }
-
-    function decreaseVolume() {
-        const newVolume = Math.max(0, Number((volume - 0.1).toFixed(2)));
-        setVolume(newVolume);
-        if (audioRef.current) { audioRef.current.volume = newVolume; }
-    }
-
-    function setVolumeInDatabase() {
-        const volumeRef = ref(database, 'data/audio_module/volume');
-        set(volumeRef, volume)
-            .then(() => { console.log('Volume saved to database:', volume); })
-            .catch(error => { console.error('Failed to set volume in database:', error); });
-    }
-
     /* Mock-up Data */
     const data = {
         pir_on: true,
         pir_init: true,
         pir_detect: true,
         code_lock_status: false,
-        code_lock_remaining: '00:50',
-        code_lock_time: '5:00',
-        audio_sample: 'JohnCena',
+        code_lock_remaining: "00:50",
+        code_lock_time: "5:00",
+        audio_sample: "John_Cena.mp3",
         audio_volume: volume,
     }
 
@@ -117,7 +100,7 @@ export default function App() {
                             <button onClick={decreaseVolume}>-</button>
                             <span> {Math.round(volume * 100)}%</span>
                             <button onClick={increaseVolume}>+</button>
-                            <button onClick={setVolumeInDatabase}>Apply Volume</button>
+                            <button onClick={applyVolume}>Apply Volume</button>
                         </div>
                     </div>
                 </div>
