@@ -28,7 +28,6 @@ export default function Login() {
                     const userRef = ref(database, 'users/' + newUser.uid);
                     return set(userRef, {
                         firstName: newUser.displayName?.split(" ")[0],
-                        lastName: newUser.displayName?.split(" ")[1],
                         email: newUser.email,
                         lastLogin: timeInSweden()
                     });
