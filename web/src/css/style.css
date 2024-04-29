@@ -24,11 +24,6 @@ body {
     display: flex;
 }
 
-.header_wrapper .title h1,
-.header_wrapper .user h1 {
-    color: white;
-}
-
 .header_wrapper .user small,
 .header_wrapper .title small {
     position: absolute;
@@ -83,7 +78,7 @@ body {
 }
 
 /* Header, Footer */
-.header_wrapper>div:hover,
+.header_wrapper div h1:hover,
 .footer_wrapper div:hover {
     color: white;
 }

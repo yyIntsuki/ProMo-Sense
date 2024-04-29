@@ -15,12 +15,28 @@ export default function Header() {
         });
         /* Gets result from logging in by redirect */
         getRedirectResult(auth)
-            .then((result) => { if (result) { setCurrentUser(result.user); } })
-            .catch((error) => { console.error(error); })
+            .then((result) => {
+                if (result) {
+                    setCurrentUser(result.user);
+                    /* Set user to real-time database */
+                    const userRef = ref(database, "users/" + result.user.uid);
+                    return set(userRef, {
+                        firstName: result.user.displayName?.split(" ")[0],
+                        email: result.user.email,
+                        lastLogin: currentTimeInSweden()
+                    });
+                }
+            })
+            .catch((error) => { console.error("Error occurred when redirecting:", error.message); })
     }, [setCurrentUser]);
 
+    function currentTimeInSweden() {
+        const timeNow = new Date();
+        return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
+    }
+
     const navigate = useNavigate();
-    function navigateToApp() { navigate('/'); }
+    function navigateToApp() { navigate("/"); }
 
     function handleLogin(event) {
         event.preventDefault();
