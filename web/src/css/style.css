@@ -55,6 +55,12 @@ body {
     border-right: 1px solid #cccccc;
 }
 
+/* Header, Footer */
+.header_wrapper>div:hover,
+.footer_wrapper div:hover {
+    color: white;
+}
+
 /* Project, About, Login */
 .project_wrapper,
 .about_wrapper,
