@@ -43,4 +43,4 @@ async function setVolumeInDatabase(volume) {
         .catch((error) => { console.error("Failed to set volume:", error); });
 }
 
-export { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase, getVolumeFromDatabase, setVolumeInDatabase, database, get, ref }
+export { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase, getVolumeFromDatabase, setVolumeInDatabase }
