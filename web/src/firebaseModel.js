@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, get } from "firebase/database"; 
 import firebaseConfig from "./firebaseConfig";
 
 initializeApp(firebaseConfig);
@@ -11,4 +11,4 @@ const provider = new GoogleAuthProvider();
 provider.addScope('profile');
 provider.addScope('email');
 
-export { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, database, ref, set }
+export { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, database, ref, set, get }

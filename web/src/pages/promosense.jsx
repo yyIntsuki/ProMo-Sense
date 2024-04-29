@@ -1,10 +1,32 @@
-import { useState, useRef } from 'react';
-import { database, ref, set } from '../firebaseModel';
+import { useState, useRef, useEffect  } from 'react';
+import { database, ref, set, get } from '../firebaseModel';
 
 export default function App() {
     const [selectedAudioUrl, setSelectedAudioUrl] = useState('');
     const [volume, setVolume] = useState(0.5);
     const audioRef = useRef(null);
+
+	
+	useEffect(() => {
+        const volumeRef = ref(database, 'data/audio_module/volume');
+        get(volumeRef).then((snapshot) => {
+            if (snapshot.exists()) {
+                const fetchedVolume = snapshot.val();
+                setVolume(fetchedVolume);
+                if (audioRef.current) {
+                    audioRef.current.volume = fetchedVolume;
+                }
+            } else {
+                console.log("No volume setting found in Firebase. Using default.");
+            }
+            setIsLoading(false); 
+        }).catch(error => {
+            console.error("Failed to fetch volume:", error);
+            setIsLoading(false);  
+        });
+    }, []);
+	
+	
 
     function handleAudioSelection(event) {
         const selectedUrl = event.target.value;
