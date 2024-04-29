@@ -15,6 +15,33 @@ body {
     color: #cccccc;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.header_wrapper .title,
+.header_wrapper .user {
+    position: relative;
+    display: flex;
+}
+
+.header_wrapper .title h1,
+.header_wrapper .user h1 {
+    color: white;
+}
+
+.header_wrapper .user small,
+.header_wrapper .title small {
+    position: absolute;
+    bottom: 2px;
+    text-wrap: nowrap;
+}
+
+.header_wrapper .user small {
+    right: 0;
+}
+
+.header_wrapper .title small {
+    left: 0;
 }
 
 /* Footer */
@@ -55,12 +82,18 @@ body {
     border-right: 1px solid #cccccc;
 }
 
+/* Header, Footer */
+.header_wrapper>div:hover,
+.footer_wrapper div:hover {
+    color: white;
+}
+
 /* Project, About, Login */
 .project_wrapper,
 .about_wrapper,
 .login_wrapper {
     box-sizing: border-box;
-    padding: 20px;
+    padding: 20px 5vw 20px 5vw;
     height: 70vh;
     display: flex;
     flex-direction: column;
