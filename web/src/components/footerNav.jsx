@@ -1,4 +1,5 @@
-import "../css/style.css";
+import "../css/common.css";
+import "../css/components.css";
 import { useNavigate } from 'react-router-dom';
 
 export default function Footer() {
@@ -11,11 +12,11 @@ export default function Footer() {
         <div className="footer_wrapper">
             <div onClick={navigateToApp}><h1>App</h1></div>
             <div onClick={navigateToProject}>
-                <p>about</p>
+                <small>about</small>
                 <h1>Project</h1>
             </div>
             <div onClick={navigateToTeam}>
-                <p>about</p>
+                <small>about</small>
                 <h1>Team</h1>
             </div>
         </div>

@@ -1,0 +1,180 @@
+/* Project, About */
+.project_wrapper,
+.about_wrapper {
+    box-sizing: border-box;
+    padding: 0 5vw 0 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #cccccc;
+    overflow: hidden;
+}
+
+/* User not logged in page */
+.app_login_wrapper {
+    box-sizing: border-box;
+    padding: 0 25px 0 25px;
+    background-color: #181818;
+    color: #cccccc;
+    overflow: hidden;
+}
+
+.app_login_wrapper h1 {
+    font-size: 3vh;
+    text-align: right;
+}
+
+/* All pages: Mobile portrait mode */
+@media (orientation: portrait) {
+
+    .project_wrapper,
+    .about_wrapper,
+    .app_wrapper,
+    .app_login_wrapper {
+        margin-top: 15vh;
+        margin-bottom: 15vh;
+    }
+}
+
+/* All pages: Mobile landscape mode */
+@media (orientation: landscape) {
+
+    .project_wrapper,
+    .about_wrapper,
+    .app_wrapper,
+    .app_login_wrapper {
+        margin-top: 10vh;
+        margin-bottom: 20vh;
+    }
+}
+
+/* About page */
+.about_wrapper {
+    padding-bottom: 25px;
+}
+
+.about_wrapper .about_group_members {
+    display: grid;
+    gap: 10px;
+
+}
+
+/* About: Landscape mode */
+@media (orientation: landscape) {
+    .about_wrapper .about_group_members {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+.about_wrapper .about_group_members .about_person {
+    width: 260px;
+    height: 410px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1f1f1f;
+    border-radius: 5px;
+}
+
+.about_wrapper .about_group_members .about_person img {
+    width: 225px;
+    height: 225px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.about_wrapper .about_group_members .about_person .roles {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    width: 225px;
+    height: 50px;
+}
+
+.about_wrapper .about_group_members .about_person .roles p {
+    margin: 0;
+}
+
+.about_wrapper .about_group_members .about_person .contact {
+    display: flex;
+    flex-direction: column;
+    width: 225px;
+    text-align: right;
+}
+
+.about_wrapper .about_group_members .about_person .contact h5 {
+    background-color: #181818;
+    margin: 0;
+}
+
+.about_wrapper button {
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    text-align: inherit;
+    font: inherit;
+    border-radius: 0;
+    appearance: none;
+    color: #cccccc;
+}
+
+/* App */
+.app_wrapper {
+    box-sizing: border-box;
+    padding: 2.5vh;
+    background-color: #181818;
+    color: #cccccc;
+    overflow: hidden;
+}
+
+.app_wrapper .app_category h1 {
+    margin: 0;
+    text-decoration: underline #1f1f1f;
+}
+
+.app_wrapper .app_category .item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2em;
+}
+
+.app_wrapper .app_category .item h3 {
+    margin: 0;
+}
+
+.app_wrapper .app_category .item p {
+    display: flex;
+    justify-content: space-between;
+    line-height: 0px;
+}
+
+.app_wrapper .app_category .item span {
+    color: white;
+}
+
+.app_wrapper .app_category .item button {
+    background-color: #1f1f1f;
+    color: #cccccc;
+    border: none;
+    border-radius: 5px;
+}
+
+/* App: Mobile portrait mode */
+@media (orientation: portrait) {
+    .app_wrapper {
+        display: flex;
+        flex-direction: column;
+        font-size: 4vw;
+    }
+}
+
+/* App: Mobile landscape mode */
+@media (orientation: landscape) {
+    .app_wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        font-size: 1.25vw;
+    }
+}

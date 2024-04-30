@@ -1,4 +1,5 @@
-import "../css/style.css";
+import "../css/common.css";
+import "../css/components.css";
 import { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase } from "../firebaseModel";

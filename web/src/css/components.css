@@ -1,0 +1,124 @@
+/* Header */
+.header_wrapper {
+    box-sizing: border-box;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    display: flex;
+    overflow: hidden;
+    background-color: #1f1f1f;
+    color: #cccccc;
+}
+
+/* Header: Mobile portrait mode */
+@media (orientation: portrait) {
+    .header_wrapper {
+        flex-direction: column;
+        padding: 5vw;
+        height: 15vh;
+        font-size: 3vw;
+    }
+
+    .header_wrapper div {
+        display: flex;
+        flex-direction: column;
+        height: 5vh;
+    }
+
+    .header_wrapper .user {
+        text-align: right;
+    }
+
+    .header_wrapper .title h1 {
+        margin: 0;
+        line-height: 3vh;
+    }
+
+    .header_wrapper .user h1 {
+        margin: 0;
+        line-height: 4vh;
+    }
+}
+
+/* Header Landscape Mode */
+@media (orientation: landscape) {
+    .header_wrapper {
+        align-items: center;
+        justify-content: space-between;
+        padding: 25px;
+        height: 10vh;
+        font-size: 2vh;
+    }
+
+    .header_wrapper .title h1 {
+        margin: 0;
+        line-height: 2vw;
+    }
+
+    .header_wrapper .user h1 {
+        margin: 0;
+        line-height: 2.5vw;
+    }
+}
+
+/* Footer */
+.footer_wrapper {
+    position: fixed;
+    bottom: 0;
+    background-color: #1f1f1f;
+    color: #cccccc;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    overflow: hidden;
+}
+
+/* Footer: Mobile portrait mode */
+@media (orientation: portrait) {
+    .footer_wrapper {
+        height: 15vh;
+    }
+}
+
+/* Footer: Mobile landscape mode */
+@media (orientation: landscape) {
+    .footer_wrapper {
+        height: 20vh;
+    }
+}
+
+.footer_wrapper div {
+    width: calc(100vw / 3);
+    height: 100px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+}
+
+.footer_wrapper div small {
+    margin: 0;
+    position: absolute;
+    top: 20px;
+}
+
+.footer_wrapper div h1 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+}
+
+.footer_wrapper> :nth-child(2) {
+    border-left: 1px solid #cccccc;
+    border-right: 1px solid #cccccc;
+}
+
+/* Header, Footer */
+.header_wrapper div h1:hover,
+.footer_wrapper div:hover {
+    color: white;
+}

@@ -7,42 +7,64 @@ export default function Team() {
             <div className="about_group_members">
                 <div className="about_person">
                     <h4>Salahudin Salah</h4>
-                    <img src="https://i.ibb.co/ScX1q0M/Salah-Grupp9.jpg" alt="Salahudin Salah" className="about_image" />
-                    <p>Product Owner & Developer</p>
-                    <p>sasalah@kth.se</p>
-                    <h5 onClick={() => handleClickToEmail("sasalah@kth.se")}>Contact</h5>
+                    <img src="https://i.ibb.co/ScX1q0M/Salah-Grupp9.jpg" alt="Salahudin Salah" />
+                    <div className="roles">
+                        <p>Product Owner</p>
+                        <p>Developer</p>
+                    </div>
+                    <div className="contact">
+                        <button onClick={() => handleClickToEmail("sasalah@kth.se")}>Contact</button>
+                        <small>sasalah@kth.se</small>
+                    </div>
                 </div>
 
                 <div className="about_person">
                     <h4>Ali Kazimov</h4>
-                    <img src="https://i.ibb.co/VwSjYgg/ALIGRUPP9.jpg" alt="Ali Kazimov" className="about_image" />
-                    <p>Developer</p>
-                    <p>kazimov@kth.se</p>
-                    <h5 onClick={() => handleClickToEmail("kazimov@kth.se")}>Contact</h5>
+                    <img src="https://i.ibb.co/VwSjYgg/ALIGRUPP9.jpg" alt="Ali Kazimov" />
+                    <div className="roles">
+                        <p>Developer</p>
+                    </div>
+                    <div className="contact">
+                        <button onClick={() => handleClickToEmail("kazimov@kth.se")}>Contact</button>
+                        <small>kazimov@kth.se</small>
+                    </div>
                 </div>
 
                 <div className="about_person">
                     <h4>Ludwig Ask</h4>
-                    <img src="https://i.ibb.co/fxXDSFT/DIFSUGER.jpg" alt="Ludwig Ask" className="about_image" />
-                    <p>Developer</p>
-                    <p>ludwigas@kth.se</p>
-                    <h5 onClick={() => handleClickToEmail("ludwigas@kth.se")}>Contact</h5>
+                    <img src="https://i.ibb.co/fxXDSFT/DIFSUGER.jpg" alt="Ludwig Ask" />
+                    <div className="roles">
+                        <p>Developer</p>
+                    </div>
+                    <div className="contact">
+                        <button onClick={() => handleClickToEmail("ludwigas@kth.se")}>Contact</button>
+                        <small>ludwigas@kth.se</small>
+                    </div>
                 </div>
 
                 <div className="about_person">
                     <h4>Peter Li</h4>
-                    <img src="https://i.ibb.co/P5JCfSM/peter-Grupp9.jpg" alt="Peter Li" className="about_image" />
-                    <p>Developer</p>
-                    <p>pli2@kth.se</p>
-                    <h5 onClick={() => handleClickToEmail("pli2@kth.se")}>Contact</h5>
+                    <img src="https://i.ibb.co/P5JCfSM/peter-Grupp9.jpg" alt="Peter Li" />
+                    <div className="roles">
+                        <p>Developer</p>
+                    </div>
+                    <div className="contact">
+                        <button onClick={() => handleClickToEmail("pli2@kth.se")}>Contact</button>
+                        <small>pli2@kth.se</small>
+                    </div>
                 </div>
 
                 <div className="about_person">
                     <h4>Daniel Lejonstad</h4>
-                    <img src="https://i.ibb.co/QQB53nd/Daniel-Grupp9.jpg" alt="Daniel Lejonstad" className="about_image" />
-                    <p>Scrum Master & Developer</p>
-                    <p>daniel.lejonstad@hotmail.com</p>
-                    <h5 onClick={() => handleClickToEmail("daniel.lejonstad@hotmail.com")}>Contact</h5>
+                    <img src="https://i.ibb.co/QQB53nd/Daniel-Grupp9.jpg" alt="Daniel Lejonstad" />
+                    <div className="roles">
+                        <p>Scrum Master</p>
+                        <p>Developer</p>
+                    </div>
+                    <div className="contact">
+                        <button onClick={() => handleClickToEmail("daniel.lejonstad@hotmail.com")}>Contact</button>
+                        <small>daniel.lejonstad@hotmail.com</small>
+                    </div>
                 </div>
             </div>
         </div>

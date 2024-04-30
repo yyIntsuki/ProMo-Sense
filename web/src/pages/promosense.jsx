@@ -1,3 +1,5 @@
+import "../css/common.css";
+import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import { setVolumeInDatabase, getVolumeFromDatabase } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
@@ -59,21 +61,21 @@ export default function App() {
         audio_volume: volume,
     }
 
-    return (
-        <div className="app_wrapper">
-            {currentUser ? <>
+    return (<>
+        {currentUser ?
+            <div className="app_wrapper">
                 <div className='app_category'>
                     <h1>Status</h1>
 
                     <div className="item">
-                        <h2 className="item_title">Motion sensor</h2>
+                        <h3 className="item_title">Motion sensor</h3>
                         <p>STATUS: <span>{data.pir_on ? 'ON' : 'OFF'}</span></p>
                         <p>INITIALIZED: <span>{data.pir_detect ? 'TRUE' : 'FALSE'}</span></p>
                         <p>DETECTED: <span>{data.pir_detect ? 'TRUE' : 'FALSE'}</span></p>
                     </div>
 
                     <div className="item">
-                        <h2 className="item_title">Code-lock</h2>
+                        <h3 className="item_title">Code-lock</h3>
                         <p>STATUS: <span>{data.code_lock_status ? 'ACTIVE' : 'INACTIVE'}</span></p>
                         <p>REMAINING TIME: <span>{data.code_lock_status ? `${data.code_lock_remaining} / ${data.code_lock_time}` : '-'}</span></p>
                     </div>
@@ -83,7 +85,7 @@ export default function App() {
 
                     <div className="item">
                         <audio ref={audioRef} preload="auto" hidden>Your browser does not support the audio element.</audio>
-                        <h2 className="item_title">Audio module</h2>
+                        <h3 className="item_title">Audio module</h3>
                         <div className="item_detail">
                             <p>SAMPLE:</p>
                             <div className="detail_row">
@@ -108,7 +110,9 @@ export default function App() {
                         </div>
                     </div>
                 </div>
-            </> : <h1>Please login to continue</h1>}
-        </div>
-    );
+            </div >
+            :
+            <div className="app_login_wrapper"><h1>Please login to continue</h1></div>
+        }
+    </>);
 }
