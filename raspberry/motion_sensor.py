@@ -10,8 +10,8 @@ from firebase import push_to_db
 from gpiozero import MotionSensor
 
 # Pin configuration
-PIR_PIN_3 = 17  # GPIO17, pin 11 on Raspberry
-pir = MotionSensor(PIR_PIN_3)
+PIR_PIN_OUT = 21  # GPIO21, pin 40 on Raspberry
+pir = MotionSensor(PIR_PIN_OUT)
 
 # Global variables
 COMPONENT_NAME = "motion_sensor"
