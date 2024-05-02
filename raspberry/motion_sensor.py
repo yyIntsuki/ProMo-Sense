@@ -6,7 +6,7 @@ Module for handling motion sensor main functionality
 
 from threading import Thread
 from utils import sleep, get_current_time, get_running_time
-from firebase import push_to_db
+from firebase import push_to_database
 from gpiozero import MotionSensor
 
 # Pin configuration
@@ -42,16 +42,16 @@ def timer():
     """Sensor alive status with threading, refreshes every 30 seconds to save quota"""
     global CURRENT_RUNNING_TIME
     while True:
-        push_to_db(COMPONENT_NAME, status())
+        push_to_database(COMPONENT_NAME, status())
         sleep(30)
         CURRENT_RUNNING_TIME += 30
 
 
 # Sensor initialization
-push_to_db(COMPONENT_NAME, status(init=False))
+push_to_database(COMPONENT_NAME, status(init=False))
 print("Sensor initializing, Please wait for one minute...")
 sleep(60)
-push_to_db(COMPONENT_NAME, status())
+push_to_database(COMPONENT_NAME, status())
 print("Initializing complete.")
 
 # Keep track of alive status
@@ -62,8 +62,8 @@ timer_thread.start()
 while True:
     print("Waiting for motion...")
     pir.wait_for_motion()
-    push_to_db(COMPONENT_NAME, status())
+    push_to_database(COMPONENT_NAME, status())
 
     print("Motion detected!")
     pir.wait_for_no_motion()
-    push_to_db(COMPONENT_NAME, status(detected=True))
+    push_to_database(COMPONENT_NAME, status(detected=True))
