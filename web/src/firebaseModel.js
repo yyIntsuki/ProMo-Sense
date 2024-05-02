@@ -12,14 +12,14 @@ const provider = new GoogleAuthProvider();
 provider.addScope('profile');
 provider.addScope('email');
 
-function setUserInDatabase(user) {
+async function setUserInDatabase(user) {
     function currentTimeInSweden() {
         const timeNow = new Date();
         return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
     }
 
     const userRef = ref(database, "users/" + user.uid);
-    return set(userRef, {
+    return await set(userRef, {
         firstName: user.displayName?.split(" ")[0],
         email: user.email,
         lastLogin: currentTimeInSweden()

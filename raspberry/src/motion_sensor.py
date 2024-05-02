@@ -1,7 +1,7 @@
 """
 Module for handling motion sensor main functionality
     gpiozero: https://gpiozero.readthedocs.io/en/latest/api_input.html#gpiozero.MotionSensor
-    PIR: .\docs\HC-SR501 PIR Sensor_EN.pdf
+    PIR: raspberry/docs/HC-SR501 PIR Sensor_EN.pdf
 """
 
 from threading import Thread
