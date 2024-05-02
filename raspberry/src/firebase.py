@@ -43,4 +43,4 @@ def get_from_storage(path):
 
 
 # TEST
-get_from_storage(STORAGE_REMOTE_PATH)
+# get_from_storage(STORAGE_REMOTE_PATH)
