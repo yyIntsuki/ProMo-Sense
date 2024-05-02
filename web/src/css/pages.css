@@ -160,11 +160,30 @@
     border-radius: 5px;
 }
 
+.app_wrapper .app_category .item .item_detail {
+    display: flex;
+    justify-content: space-between;
+}
+
+.app_wrapper .app_category .item .item_detail .detail_row {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.app_wrapper .app_category .item .item_detail .detail_row button {
+    font-family: inherit;
+}
+
 /* App: Mobile portrait mode */
 @media (orientation: portrait) {
     .app_wrapper {
         display: flex;
         flex-direction: column;
+        font-size: 4vw;
+    }
+
+    .app_wrapper .app_category .item .item_detail .detail_row button {
         font-size: 4vw;
     }
 }
@@ -175,6 +194,10 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
+        font-size: 1.25vw;
+    }
+
+    .app_wrapper .app_category .item .item_detail .detail_row button {
         font-size: 1.25vw;
     }
 }

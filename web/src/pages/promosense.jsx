@@ -102,10 +102,10 @@ export default function App() {
                         <div className='item_detail'>
                             <p>VOLUME:</p>
                             <div className="detail_row">
-                                <button onClick={decreaseVolume}>-</button>
-                                <span> {Math.round(volume * 100)}%</span>
-                                <button onClick={increaseVolume}>+</button>
-                                <button onClick={applyVolume}>Apply Volume</button>
+                                <button onClick={decreaseVolume}>－</button>
+                                <span> {Math.round(volume * 100)}％</span>
+                                <button onClick={increaseVolume}>＋</button>
+                                <button onClick={applyVolume}>APPLY</button>
                             </div>
                         </div>
                     </div>
