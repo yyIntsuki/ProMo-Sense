@@ -4,6 +4,7 @@ import { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
+import { signInWithPopup } from "firebase/auth";
 
 export default function Header() {
     const { currentUser, setCurrentUser } = useContext(UserContext);
@@ -31,7 +32,12 @@ export default function Header() {
 
     function handleLogin(event) {
         event.preventDefault();
-        signInWithRedirect(auth, provider);
+        /* For handling development as redirect fails to work due to third party cookies */
+        switch (window.location.hostname) {
+            case 'localhost': signInWithPopup(auth, provider); break;
+            default: signInWithRedirect(auth, provider); break;
+        }
+
     }
 
     function handleLogout(event) {
