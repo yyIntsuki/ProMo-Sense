@@ -1,7 +1,7 @@
 import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
-import { getAudioFiles, setVolumeInDatabase, getVolumeFromDatabase, uploadFile } from "../firebaseModel"; // Ensure these are correctly imported
+import { getAudioFiles, setVolumeInDatabase, getVolumeFromDatabase, uploadFile } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
 export default function App() {

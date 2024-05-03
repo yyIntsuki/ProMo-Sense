@@ -5,15 +5,31 @@ import { getDatabase, ref, set, get } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 const storage = getStorage(app);
+
+/* User authentication */
 const provider = new GoogleAuthProvider();
 provider.addScope('profile');
 provider.addScope('email');
 
+async function setUserInDatabase(user) {
+    function currentTimeInSweden() {
+        const timeNow = new Date();
+        return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
+    }
+
+    const userRef = ref(database, "users/" + user.uid);
+    return set(userRef, {
+        firstName: user.displayName?.split(" ")[0],
+        email: user.email,
+        lastLogin: currentTimeInSweden()
+    });
+}
+
+/* Audio module */
 async function getAudioFiles(userId) {
     const audioListRef = storageRef(storage, `user_files/${userId}/`);
     try {
@@ -36,20 +52,6 @@ async function uploadFile(file, userId) {
     } catch (error) {
         console.error('Error uploading file:', error);
     }
-}
-
-async function setUserInDatabase(user) {
-    function currentTimeInSweden() {
-        const timeNow = new Date();
-        return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
-    }
-
-    const userRef = ref(database, "users/" + user.uid);
-    return set(userRef, {
-        firstName: user.displayName?.split(" ")[0],
-        email: user.email,
-        lastLogin: currentTimeInSweden()
-    });
 }
 
 async function getVolumeFromDatabase() {
