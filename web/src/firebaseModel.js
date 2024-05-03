@@ -1,8 +1,10 @@
+
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set, get } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
+
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -43,7 +45,7 @@ async function setUserInDatabase(user) {
     }
 
     const userRef = ref(database, "users/" + user.uid);
-    return await set(userRef, {
+    return set(userRef, {
         firstName: user.displayName?.split(" ")[0],
         email: user.email,
         lastLogin: currentTimeInSweden()
