@@ -2,9 +2,8 @@ import "../css/common.css";
 import "../css/components.css";
 import { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { auth, onAuthStateChanged, provider, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase } from "../firebaseModel";
+import { auth, onAuthStateChanged, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
-import { signInWithPopup } from "firebase/auth";
 
 export default function Header() {
     const { currentUser, setCurrentUser } = useContext(UserContext);

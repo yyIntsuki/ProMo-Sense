@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, set, get } from "firebase/database";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
@@ -73,4 +73,4 @@ async function setVolumeInDatabase(volume) {
     }
 }
 
-export { auth, provider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles };
+export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles };
