@@ -72,23 +72,8 @@
     overflow: hidden;
 }
 
-/* Footer: Mobile portrait mode */
-@media (orientation: portrait) {
-    .footer_wrapper {
-        height: 15vh;
-    }
-}
-
-/* Footer: Mobile landscape mode */
-@media (orientation: landscape) {
-    .footer_wrapper {
-        height: 20vh;
-    }
-}
-
 .footer_wrapper div {
     width: calc(100vw / 3);
-    height: 100px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -100,7 +85,7 @@
 .footer_wrapper div small {
     margin: 0;
     position: absolute;
-    top: 20px;
+    top: 25px;
 }
 
 .footer_wrapper div h1 {
@@ -108,7 +93,6 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 20px;
 }
 
 .footer_wrapper> :nth-child(2) {
@@ -120,4 +104,59 @@
 .header_wrapper div h1:hover,
 .footer_wrapper div:hover {
     color: white;
+}
+
+/* Footer: Mobile portrait mode */
+@media (orientation: portrait) {
+    .footer_wrapper {
+        height: 15vh;
+    }
+
+    .footer_wrapper div {
+        height: 10vh;
+        font-size: 2vh;
+    }
+
+    .footer_wrapper div small {
+        font-size: 1.75vh;
+        top: 1.5vh;
+    }
+
+    .footer_wrapper div h1 {
+        font-size: 3vh;
+    }
+}
+
+/* Footer: Mobile landscape mode */
+@media (orientation: landscape) and (max-width: 1280px) {
+    .footer_wrapper {
+        height: 20vh;
+    }
+
+    .footer_wrapper div {
+        height: 15vh;
+    }
+
+    .footer_wrapper div small {
+        font-size: 1.75vw;
+        top: 1.5vh;
+    }
+
+    .footer_wrapper div h1 {
+        font-size: 3vw;
+    }
+}
+
+@media screen and (min-height: 720px) {
+    .footer_wrapper {
+        height: 20vh;
+    }
+
+    .footer_wrapper div {
+        height: 15vh;
+    }
+
+    .footer_wrapper div small {
+        top: 3.5vh;
+    }
 }
