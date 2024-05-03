@@ -175,6 +175,17 @@
     font-family: inherit;
 }
 
+.app_wrapper .app_category .item .item_detail .detail_row .audio_select {
+    min-width: 10vw;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0 5px 0 5px;
+    border: 1px solid #1f1f1f;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
 /* App: Mobile portrait mode */
 @media (orientation: portrait) {
     .app_wrapper {
@@ -185,6 +196,11 @@
 
     .app_wrapper .app_category .item .item_detail .detail_row button {
         font-size: 4vw;
+    }
+
+    .app_wrapper .app_category .item .item_detail .detail_row .audio_select {
+        font-size: 3vw;
+        min-height: 3vh;
     }
 }
 
@@ -199,5 +215,10 @@
 
     .app_wrapper .app_category .item .item_detail .detail_row button {
         font-size: 1.25vw;
+    }
+
+    .app_wrapper .app_category .item .item_detail .detail_row .audio_select {
+        font-size: 1vw;
+        min-height: 3vh;
     }
 }

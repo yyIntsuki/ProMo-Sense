@@ -95,7 +95,7 @@ export default function App() {
                             <div className="item_detail">
                                 <p>SAMPLE:</p>
                                 <div className="detail_row">
-                                    <select onChange={handleAudioSelection} value={selectedAudioUrl}>
+                                    <select className="audio_select" onChange={handleAudioSelection} value={selectedAudioUrl}>
                                         <option value="">Select a sound</option>
                                         {audioUrls.map((url, index) => (
                                             <option key={index} value={url}>{`Sound ${index + 1}`}</option>

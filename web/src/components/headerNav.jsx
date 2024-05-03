@@ -36,7 +36,6 @@ export default function Header() {
             case 'localhost': signInWithPopup(auth, provider); break;
             default: signInWithRedirect(auth, provider); break;
         }
-
     }
 
     function handleLogout(event) {
