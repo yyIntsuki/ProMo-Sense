@@ -43,7 +43,7 @@
     .about_wrapper,
     .app_wrapper,
     .app_login_wrapper {
-        margin-top: 10vh;
+        margin-top: 12.5vh;
         margin-bottom: 20vh;
     }
 }
@@ -207,10 +207,14 @@
 /* App: Mobile landscape mode */
 @media (orientation: landscape) {
     .app_wrapper {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
+        display: flex;
+        justify-content: center;
+        gap: 5vw;
         font-size: 1.25vw;
+    }
+
+    .app_wrapper .app_category {
+        width: 40vw;
     }
 
     .app_wrapper .app_category .item .item_detail .detail_row button {

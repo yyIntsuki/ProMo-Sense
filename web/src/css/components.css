@@ -139,7 +139,7 @@
 
     .footer_wrapper div small {
         font-size: 1.75vw;
-        top: 1.5vh;
+        top: 0;
     }
 
     .footer_wrapper div h1 {
@@ -147,7 +147,7 @@
     }
 }
 
-@media screen and (min-height: 720px) {
+@media screen and (min-width: 1280px) {
     .footer_wrapper {
         height: 20vh;
     }
