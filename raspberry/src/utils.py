@@ -2,8 +2,8 @@
 Module for various utility functions to be used in different modules
 """
 
+import os
 import time
-import datetime
 
 
 def sleep(seconds):
@@ -18,6 +18,7 @@ def get_current_time():
     return formatted_time
 
 
-def get_running_time(seconds):
-    """Formats given seconds to a time string"""
-    return str(datetime.timedelta(seconds=seconds))
+def create_folder(path):
+    """Creates folder at desired path"""
+    if not os.path.exists(path):
+        os.mkdir(path)

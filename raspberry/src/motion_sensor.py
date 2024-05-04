@@ -4,10 +4,9 @@ Module for handling motion sensor main functionality
     PIR: raspberry/docs/HC-SR501 PIR Sensor_EN.pdf
 """
 
-from threading import Thread
-from utils import sleep, get_current_time, get_running_time
-from firebase import push_to_database
 from gpiozero import MotionSensor
+from utils import sleep, get_current_time
+from firebase import set_data_to_database, update_data_to_database
 
 # Pin configuration
 PIR_PIN_OUT = 21  # GPIO21, pin 40 on Raspberry
@@ -19,51 +18,51 @@ CURRENT_RUNNING_TIME = 0
 LAST_TIME_DETECTED = None
 
 
-def status(init=True, detected=False):
-    """Sensor status template"""
-    global LAST_TIME_DETECTED
-    if detected:
-        time_detected = get_current_time()
-        LAST_TIME_DETECTED = time_detected
-    else:
-        time_detected = LAST_TIME_DETECTED
-
-    time_running = get_running_time(CURRENT_RUNNING_TIME)
-
+def initialize():
+    """Function to reset all data values"""
     return {
-        "init": init,
-        "detected": detected,
-        "time_detected": time_detected,
-        "time_running": time_running,
+        "initialized": False,
+        "detected": False,
+        "time_detected": False,
+        "time_running": False,
     }
 
 
-def timer():
-    """Sensor alive status with threading, refreshes every 30 seconds to save quota"""
-    global CURRENT_RUNNING_TIME
-    while True:
-        push_to_database(COMPONENT_NAME, status())
-        sleep(30)
-        CURRENT_RUNNING_TIME += 30
-
-
 # Sensor initialization
-push_to_database(COMPONENT_NAME, status(init=False))
-print("Sensor initializing, Please wait for one minute...")
-sleep(60)
-push_to_database(COMPONENT_NAME, status())
+set_data_to_database(COMPONENT_NAME, initialize())
+print("Sensor initializing, Please wait...")
+pir.wait_for_motion()
+update_data_to_database(COMPONENT_NAME, {"initialized": True, "time_running": 0})
 print("Initializing complete.")
 
-# Keep track of alive status
-timer_thread = Thread(target=timer, daemon=True)
-timer_thread.start()
-
 # Detection loop
-while True:
-    print("Waiting for motion...")
-    pir.wait_for_motion()
-    push_to_database(COMPONENT_NAME, status())
+CURRENT_STATE = False
+PREVIOUS_STATE = False
+RUNTIME_INTERVAL = 30
 
-    print("Motion detected!")
-    pir.wait_for_no_motion()
-    push_to_database(COMPONENT_NAME, status(detected=True))
+try:
+    while True:
+        CURRENT_STATE = pir.motion_detected
+
+        if CURRENT_STATE is True and PREVIOUS_STATE is False:
+            print("Motion detected!")
+            update_data_to_database(
+                COMPONENT_NAME, {"detected": True, "time_detected": get_current_time()}
+            )
+            PREVIOUS_STATE = True
+
+        elif CURRENT_STATE is False and PREVIOUS_STATE is True:
+            print("Waiting for motion...")
+            update_data_to_database(COMPONENT_NAME, {"detected": False})
+            PREVIOUS_STATE = False
+
+        sleep(1)
+        CURRENT_RUNNING_TIME += 1
+
+        if CURRENT_RUNNING_TIME % RUNTIME_INTERVAL == 0:
+            update_data_to_database(
+                COMPONENT_NAME, {"time_running": CURRENT_RUNNING_TIME}
+            )
+
+except KeyboardInterrupt:
+    print("\nProgram exited.")
