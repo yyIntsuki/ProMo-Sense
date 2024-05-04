@@ -171,7 +171,8 @@
     gap: 5px;
 }
 
-.app_wrapper .app_category .item .item_detail .detail_row button {
+.app_wrapper .app_category .item .item_detail .detail_row button,
+.app_wrapper .app_category .item button {
     font-family: inherit;
 }
 
@@ -186,6 +187,16 @@
     font-family: inherit;
 }
 
+.app_wrapper .app_category .item .item_detail .detail_row .lock_time_input {
+    width: 3vw;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0 5px 0 5px;
+    border: 1px solid #1f1f1f;
+    border-radius: 5px;
+    font-family: inherit;
+}
+
 /* App: Mobile portrait mode */
 @media (orientation: portrait) {
     .app_wrapper {
@@ -194,11 +205,13 @@
         font-size: 4vw;
     }
 
-    .app_wrapper .app_category .item .item_detail .detail_row button {
+    .app_wrapper .app_category .item .item_detail .detail_row button,
+    .app_wrapper .app_category .item button {
         font-size: 4vw;
     }
 
-    .app_wrapper .app_category .item .item_detail .detail_row .audio_select {
+    .app_wrapper .app_category .item .item_detail .detail_row .audio_select,
+    .app_wrapper .app_category .item .item_detail .detail_row .lock_time_input {
         font-size: 3vw;
         min-height: 3vh;
     }
@@ -217,11 +230,13 @@
         width: 40vw;
     }
 
-    .app_wrapper .app_category .item .item_detail .detail_row button {
+    .app_wrapper .app_category .item .item_detail .detail_row button,
+    .app_wrapper .app_category .item button {
         font-size: 1.25vw;
     }
 
-    .app_wrapper .app_category .item .item_detail .detail_row .audio_select {
+    .app_wrapper .app_category .item .item_detail .detail_row .audio_select,
+    .app_wrapper .app_category .item .item_detail .detail_row .lock_time_input {
         font-size: 1vw;
         min-height: 3vh;
     }
