@@ -188,7 +188,7 @@
 }
 
 .app_wrapper .app_category .item .item_detail .detail_row .lock_time_input {
-    width: 3vw;
+    width: 50px;
     appearance: none;
     -webkit-appearance: none;
     padding: 0 5px 0 5px;
