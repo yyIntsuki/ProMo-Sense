@@ -20,12 +20,17 @@ async function setUserInDatabase(user) {
         return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
     }
 
-    const userRef = ref(database, "users/" + user.uid);
+    const userRef = ref(database, `users/${user.uid}`);
     return await set(userRef, {
         firstName: user.displayName?.split(" ")[0],
         email: user.email,
         lastLogin: currentTimeInSweden()
     });
+}
+
+async function setActiveUserOnDatabase(user) {
+    const activeUserRef = ref(database, `users/active_user`);
+    return await set(activeUserRef, { uid: user.uid });
 }
 
 /* Audio module */
@@ -72,4 +77,4 @@ async function setVolumeInDatabase(volume) {
     }
 }
 
-export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles };
+export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase, getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles };

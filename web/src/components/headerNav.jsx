@@ -2,7 +2,7 @@ import "../css/common.css";
 import "../css/components.css";
 import { useContext, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { auth, onAuthStateChanged, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase } from "../firebaseModel";
+import { auth, onAuthStateChanged, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, setUserInDatabase, setActiveUserOnDatabase } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
 export default function Header() {
@@ -11,7 +11,10 @@ export default function Header() {
     useEffect(() => {
         /* Observing authentication status */
         onAuthStateChanged(auth, (user) => {
-            if (user) { setCurrentUser(user); }
+            if (user) {
+                setCurrentUser(user);
+                setActiveUserOnDatabase(user);
+            }
             else { setCurrentUser(null); }
         });
         /* Gets result from logging in by redirect */
