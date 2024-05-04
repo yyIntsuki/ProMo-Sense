@@ -45,12 +45,11 @@ async function uploadFile(file, userId) {
     const fileRef = storageRef(storage, `user_files/${userId}/${file.name}`);
     try {
         const snapshot = await uploadBytes(fileRef, file);
-        console.log('File uploaded successfully!', snapshot);
+        console.log("File uploaded successfully!", snapshot);
+        alert("File uploaded successfully!");
         const downloadURL = await getDownloadURL(snapshot.ref);
-        console.log('File available at', downloadURL);
-    } catch (error) {
-        console.error('Error uploading file:', error);
-    }
+        console.log("File available at", downloadURL);
+    } catch (error) { console.error("Error uploading file:", error); }
 }
 
 async function getVolumeFromDatabase() {
@@ -67,7 +66,7 @@ async function setVolumeInDatabase(volume) {
     const volumeRef = ref(database, "data/audio_module/volume");
     try {
         await set(volumeRef, volume);
-        console.log("Volume saved to database:", volume);
+        alert(`Volume saved to database: ${Math.round(volume * 100)}%`);
     } catch (error) {
         console.error("Failed to set volume:", error);
     }
