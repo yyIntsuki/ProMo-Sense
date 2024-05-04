@@ -7,7 +7,7 @@ Provides functions for Firebase database and storage access
 
 import pyrebase
 from firebase_config import config
-from utils import create_folder
+from utils import create_folder, check_path_exist
 
 # Initialize firebase app
 firebase = pyrebase.initialize_app(config)
@@ -20,12 +20,11 @@ STORAGE_LOCAL_PATH = "../downloads/"
 CURRENT_ACTIVE_USER = None
 
 
-def set_current_user():
+def get_current_user():
     """Gets currently active user on web app and set and user to serve"""
-    global CURRENT_ACTIVE_USER
     active_user = database.child("users").child("active_user").get()
     for user in active_user.each():
-        CURRENT_ACTIVE_USER = user.val()
+        print("Successfully found user with UID: " + user.val())
         return user.val()
 
 
@@ -46,7 +45,9 @@ def fetch_from_database(component_name):
 
 def get_from_storage():
     """Gets file names from Firebase storage path"""
-    set_current_user()
+    global CURRENT_ACTIVE_USER
+
+    CURRENT_ACTIVE_USER = get_current_user()
     path = STORAGE_REMOTE_PATH + CURRENT_ACTIVE_USER
     name_list = storage.bucket.list_blobs(prefix=path)
 
@@ -55,5 +56,11 @@ def get_from_storage():
     for file in name_list:
         user_folder = file.name.split("/")[1] + "/"
         file_name = file.name.split("/")[2]
+        full_path = STORAGE_LOCAL_PATH + user_folder + file_name
+
         create_folder(STORAGE_LOCAL_PATH + user_folder)
-        file.download_to_filename(STORAGE_LOCAL_PATH + user_folder + file_name)
+        if not check_path_exist(full_path):
+            file.download_to_filename(full_path)
+            print("get_from_storage: " + full_path)
+        elif check_path_exist(full_path):
+            print("get_from_storage: " + file_name + " already exists.")

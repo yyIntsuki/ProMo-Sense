@@ -19,6 +19,11 @@ def get_current_time():
 
 
 def create_folder(path):
-    """Creates folder at desired path"""
-    if not os.path.exists(path):
+    """Creates folder at specified path"""
+    if not check_path_exist(path):
         os.mkdir(path)
+
+
+def check_path_exist(path):
+    """Checks if file / folder exists at specified path"""
+    return os.path.exists(path)
