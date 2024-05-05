@@ -2,7 +2,7 @@ import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import {
-    getAudioFiles, setVolumeInDatabase, getVolumeFromDatabase, uploadFile, getMotionSensorData
+    getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange
 } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
@@ -17,22 +17,17 @@ export default function App() {
 
     useEffect(() => {
         if (currentUser) {
-            getVolumeFromDatabase()
-                .then((value) => {
-                    setVolume(value);
-                    if (audioRef.current) { audioRef.current.volume = value; }
-                });
+            onVolumeChange((value) => {
+                setVolume(value);
+                if (audioRef.current) { audioRef.current.volume = value; }
+            });
             getAudioFiles(currentUser.uid)
                 .then(urls => { setAudioUrls(urls); })
                 .catch(error => { console.error("Error loading audio files:", error); });
 
-            getMotionSensorData()
-                .then((data) => {
-                    setMotionSensorData(data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching motion sensor data:", error);
-                });
+            onMotionSensorChange((data) => {
+                setMotionSensorData(data);
+            });
         }
     }, [currentUser]);
 

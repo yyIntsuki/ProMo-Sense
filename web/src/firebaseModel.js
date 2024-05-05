@@ -4,7 +4,7 @@ import {
     getRedirectResult, signOut, onAuthStateChanged
 } from "firebase/auth";
 import {
-    getDatabase, ref, set, get
+    getDatabase, ref, set, onValue
 } from "firebase/database";
 import {
     getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll
@@ -64,39 +64,38 @@ async function uploadFile(file, userId) {
     } catch (error) { console.error("Error uploading file:", error); }
 }
 
-async function getVolumeFromDatabase() {
+function onVolumeChange(callback) {
     const volumeRef = ref(database, "data/audio_module/volume");
-    try {
-        const snapshot = await get(volumeRef);
-        return snapshot.exists() ? snapshot.val() : null;
-    } catch (error) {
+    onValue(volumeRef, (snapshot) => {
+        callback(snapshot.exists() ? snapshot.val() : null);
+    }, (error) => {
         console.error("Failed to fetch volume:", error);
-    }
+    });
 }
 
-async function setVolumeInDatabase(volume) {
+function setVolumeInDatabase(volume) {
     const volumeRef = ref(database, "data/audio_module/volume");
-    try {
-        await set(volumeRef, volume);
-        alert(`Volume saved to database: ${Math.round(volume * 100)}%`);
-    } catch (error) {
-        console.error("Failed to set volume:", error);
-    }
+    set(volumeRef, volume)
+        .then(() => {
+            alert(`Volume saved to database: ${Math.round(volume * 100)}%`);
+        })
+        .catch((error) => {
+            console.error("Failed to set volume:", error);
+        });
 }
 
 /* Motion sensor module */
-async function getMotionSensorData() {
+function onMotionSensorChange(callback) {
     const motionSensorRef = ref(database, "data/motion_sensor");
-    try {
-        const snapshot = await get(motionSensorRef);
-        return snapshot.exists() ? snapshot.val() : null;
-    } catch (error) {
+    onValue(motionSensorRef, (snapshot) => {
+        callback(snapshot.exists() ? snapshot.val() : null);
+    }, (error) => {
         console.error("Failed to fetch motion sensor data:", error);
-    }
+    });
 }
 
 export {
     auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult,
     signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase,
-    getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles, getMotionSensorData
+    onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange
 };
