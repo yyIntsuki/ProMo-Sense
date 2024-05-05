@@ -17,7 +17,6 @@ storage = firebase.storage()
 # Global variables
 STORAGE_REMOTE_PATH = "user_files/"
 STORAGE_LOCAL_PATH = "../downloads/"
-CURRENT_ACTIVE_USER = None
 
 
 def get_current_user():
@@ -43,12 +42,9 @@ def fetch_from_database(component_name):
     return database.child("data").child(component_name).get().val()
 
 
-def get_from_storage():
+def get_from_storage(user):
     """Gets file names from Firebase storage path"""
-    global CURRENT_ACTIVE_USER
-
-    CURRENT_ACTIVE_USER = get_current_user()
-    path = STORAGE_REMOTE_PATH + CURRENT_ACTIVE_USER
+    path = STORAGE_REMOTE_PATH + user
     name_list = storage.bucket.list_blobs(prefix=path)
 
     create_folder(STORAGE_LOCAL_PATH)

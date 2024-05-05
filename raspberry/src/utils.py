@@ -12,10 +12,13 @@ def sleep(seconds):
 
 
 def get_current_time():
+    """Gets time since the Epoch in seconds, returns seconds"""
+    return time.mktime(time.localtime())
+
+
+def get_current_formatted_time():
     """Gets and formats call-time in %m/%d/%Y, %H:%M:%S format"""
-    current_time = time.localtime()
-    formatted_time = time.strftime("%m/%d/%Y, %H:%M:%S", current_time)
-    return formatted_time
+    return time.strftime("%m/%d/%Y, %H:%M:%S", time.localtime())
 
 
 def create_folder(path):

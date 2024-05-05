@@ -5,7 +5,7 @@ Module for handling motion sensor main functionality
 """
 
 from gpiozero import MotionSensor
-from utils import sleep, get_current_time
+from utils import sleep, get_current_time, get_current_formatted_time
 from firebase import (
     set_data_to_database,
     update_data_to_database,
@@ -20,9 +20,10 @@ pir = MotionSensor(PIR_PIN_OUT)
 
 # Global variables
 COMPONENT_NAME = "motion_sensor"
-CURRENT_RUNNING_TIME = 0
+CURRENT_RUNNING_TIME = None
 LAST_TIME_DETECTED = None
 CURRENT_ACTIVE_USER = get_current_user()
+CURRENT_AUDIO_SAMPLE = "And His Name is JOHN CENA - Sound Effect (HD).mp3"
 
 
 def status_initialization():
@@ -37,22 +38,32 @@ def status_initialization():
 
 def initialize_sensor():
     """Sensor initialization"""
+    global CURRENT_RUNNING_TIME
+
     set_data_to_database(COMPONENT_NAME, status_initialization())
     print("Sensor initializing, Please wait...")
-    pir.wait_for_motion()
+
+    seconds = 0
+    while seconds < 30:
+        if pir.motion_detected:
+            break
+        sleep(1)
+        seconds += 1
+
     update_data_to_database(COMPONENT_NAME, {"initialized": True, "time_running": 0})
-    print("Initializing complete.")
+    CURRENT_RUNNING_TIME = get_current_time()
+    print("Initialization complete.")
 
 
-get_from_storage()
+get_from_storage(CURRENT_ACTIVE_USER)
 initialize_sensor()
 init_audio()
-load_audio(CURRENT_ACTIVE_USER, "And His Name is JOHN CENA - Sound Effect (HD).mp3")
+load_audio(CURRENT_ACTIVE_USER, CURRENT_AUDIO_SAMPLE)
 
 # Detection loop
 CURRENT_STATE = False
 PREVIOUS_STATE = False
-RUNTIME_INTERVAL = 30
+RUNTIME_INTERVAL = 20
 
 while True:
     CURRENT_STATE = pir.motion_detected
@@ -60,7 +71,8 @@ while True:
     if CURRENT_STATE is True and PREVIOUS_STATE is False:
         print("Motion detected!")
         update_data_to_database(
-            COMPONENT_NAME, {"detected": True, "time_detected": get_current_time()}
+            COMPONENT_NAME,
+            {"detected": True, "time_detected": get_current_formatted_time()},
         )
         play_audio()
         PREVIOUS_STATE = True
@@ -71,7 +83,8 @@ while True:
         PREVIOUS_STATE = False
 
     sleep(1)
-    CURRENT_RUNNING_TIME += 1
+    current_time = get_current_time()
+    time_delta = current_time - CURRENT_RUNNING_TIME
 
-    if CURRENT_RUNNING_TIME % RUNTIME_INTERVAL == 0:
-        update_data_to_database(COMPONENT_NAME, {"time_running": CURRENT_RUNNING_TIME})
+    if time_delta % RUNTIME_INTERVAL == 0:
+        update_data_to_database(COMPONENT_NAME, {"time_running": time_delta})
