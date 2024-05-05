@@ -1,7 +1,9 @@
 import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
-import { getAudioFiles, setVolumeInDatabase, getVolumeFromDatabase, uploadFile } from "../firebaseModel";
+import {
+    getAudioFiles, setVolumeInDatabase, getVolumeFromDatabase, uploadFile, getMotionSensorData
+} from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
 export default function App() {
@@ -9,6 +11,7 @@ export default function App() {
     const [selectedAudioUrl, setSelectedAudioUrl] = useState("");
     const [volume, setVolume] = useState(0.5);
     const [audioUrls, setAudioUrls] = useState([]);
+    const [motionSensorData, setMotionSensorData] = useState(null);
     const audioRef = useRef(null);
     const [lockTime, setLockTime] = useState(5);
 
@@ -22,6 +25,14 @@ export default function App() {
             getAudioFiles(currentUser.uid)
                 .then(urls => { setAudioUrls(urls); })
                 .catch(error => { console.error("Error loading audio files:", error); });
+
+            getMotionSensorData()
+                .then((data) => {
+                    setMotionSensorData(data);
+                })
+                .catch((error) => {
+                    console.error("Error fetching motion sensor data:", error);
+                });
         }
     }, [currentUser]);
 
@@ -99,10 +110,15 @@ export default function App() {
                         <h1>Status</h1>
                         <div className="item">
                             <h3 className="item_title">Motion sensor</h3>
-                            <p>STATUS: <span>RUNNING</span></p> {/* RUNNING or INITIALIZING or OFF */}
-                            <p>RUNNING TIME: <span>00:05:30</span></p>
-                            <p>DETECTED: <span>TRUE</span></p>
-                            <p>DETECTION TIME: <span>25 Apr, 11:45:14</span></p>
+                            {motionSensorData ?
+                                <>
+                                    <p>STATUS: <span>{motionSensorData.detected ? 'DETECTED' : 'NOT DETECTED'}</span></p>
+                                    <p>INITIALIZED: <span>{motionSensorData.initialized ? 'TRUE' : 'FALSE'}</span></p>
+                                    <p>TIME DETECTED: <span>{motionSensorData.time_detected}</span></p>
+                                    <p>TIME RUNNING: <span>{motionSensorData.time_running}</span></p>
+                                </>
+                                : <p>Loading motion sensor data...</p>
+                            }
                         </div>
                         <div className="item">
                             <h3 className="item_title">Code-lock</h3>
