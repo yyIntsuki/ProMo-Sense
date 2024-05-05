@@ -1,14 +1,7 @@
 import { initializeApp } from "firebase/app";
-import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
-    getRedirectResult, signOut, onAuthStateChanged
-} from "firebase/auth";
-import {
-    getDatabase, ref, set, get
-} from "firebase/database";
-import {
-    getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll
-} from "firebase/storage";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, set, get } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 
 const app = initializeApp(firebaseConfig);
@@ -69,9 +62,7 @@ async function getVolumeFromDatabase() {
     try {
         const snapshot = await get(volumeRef);
         return snapshot.exists() ? snapshot.val() : null;
-    } catch (error) {
-        console.error("Failed to fetch volume:", error);
-    }
+    } catch (error) { console.error("Failed to fetch volume:", error); }
 }
 
 async function setVolumeInDatabase(volume) {
@@ -79,9 +70,7 @@ async function setVolumeInDatabase(volume) {
     try {
         await set(volumeRef, volume);
         alert(`Volume saved to database: ${Math.round(volume * 100)}%`);
-    } catch (error) {
-        console.error("Failed to set volume:", error);
-    }
+    } catch (error) { console.error("Failed to set volume:", error); }
 }
 
 /* Motion sensor module */
@@ -90,13 +79,7 @@ async function getMotionSensorData() {
     try {
         const snapshot = await get(motionSensorRef);
         return snapshot.exists() ? snapshot.val() : null;
-    } catch (error) {
-        console.error("Failed to fetch motion sensor data:", error);
-    }
+    } catch (error) { console.error("Failed to fetch motion sensor data:", error); }
 }
 
-export {
-    auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult,
-    signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase,
-    getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles, getMotionSensorData
-};
+export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase, getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles, getMotionSensorData };
