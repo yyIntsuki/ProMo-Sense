@@ -1,7 +1,14 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
-import { getDatabase, ref, set, get } from "firebase/database";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
+import {
+    getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
+    getRedirectResult, signOut, onAuthStateChanged
+} from "firebase/auth";
+import {
+    getDatabase, ref, set, get
+} from "firebase/database";
+import {
+    getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll
+} from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 
 const app = initializeApp(firebaseConfig);
@@ -77,4 +84,19 @@ async function setVolumeInDatabase(volume) {
     }
 }
 
-export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase, getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles };
+/* Motion sensor module */
+async function getMotionSensorData() {
+    const motionSensorRef = ref(database, "data/motion_sensor");
+    try {
+        const snapshot = await get(motionSensorRef);
+        return snapshot.exists() ? snapshot.val() : null;
+    } catch (error) {
+        console.error("Failed to fetch motion sensor data:", error);
+    }
+}
+
+export {
+    auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult,
+    signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase,
+    getVolumeFromDatabase, setVolumeInDatabase, getAudioFiles, getMotionSensorData
+};
