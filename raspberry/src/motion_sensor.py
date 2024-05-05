@@ -4,15 +4,11 @@ Module for handling motion sensor main functionality
     PIR: raspberry/docs/HC-SR501 PIR Sensor_EN.pdf
 """
 
+from time import sleep
 from gpiozero import MotionSensor
-from utils import sleep, get_current_time, get_current_formatted_time
-from firebase import (
-    set_data_to_database,
-    update_data_to_database,
-    get_current_user,
-    get_from_storage,
-)
-from audio import init_audio, load_audio, play_audio
+from utils import get_current_time, get_current_formatted_time
+from firebase import set_data_to_database, update_data_to_database
+from audio import play_audio
 
 # Pin configuration
 PIR_PIN_OUT = 21  # GPIO21, pin 40 on Raspberry
@@ -20,13 +16,11 @@ pir = MotionSensor(PIR_PIN_OUT)
 
 # Global variables
 COMPONENT_NAME = "motion_sensor"
-CURRENT_RUNNING_TIME = None
+RUNNING_START_TIME = None
 LAST_TIME_DETECTED = None
-CURRENT_ACTIVE_USER = get_current_user()
-CURRENT_AUDIO_SAMPLE = "And His Name is JOHN CENA - Sound Effect (HD).mp3"
 
 
-def status_initialization():
+def status_init_start():
     """Function to reset all data values"""
     return {
         "initialized": False,
@@ -36,11 +30,31 @@ def status_initialization():
     }
 
 
+def status_init_end():
+    """For finished initialization"""
+    return {"initialized": True, "time_running": 0}
+
+
+def status_detected():
+    """For when motion is detected"""
+    return {"detected": True, "time_detected": get_current_formatted_time()}
+
+
+def status_undetected():
+    """For when motion is not detected"""
+    return {"detected": False}
+
+
+def status_running_time(time_delta):
+    """For reporting to db about running time"""
+    return {"time_running": time_delta}
+
+
 def initialize_sensor():
     """Sensor initialization"""
-    global CURRENT_RUNNING_TIME
+    global RUNNING_START_TIME
 
-    set_data_to_database(COMPONENT_NAME, status_initialization())
+    set_data_to_database(COMPONENT_NAME, status_init_start())
     print("Sensor initializing, Please wait...")
 
     seconds = 0
@@ -50,41 +64,36 @@ def initialize_sensor():
         sleep(1)
         seconds += 1
 
-    update_data_to_database(COMPONENT_NAME, {"initialized": True, "time_running": 0})
-    CURRENT_RUNNING_TIME = get_current_time()
+    update_data_to_database(COMPONENT_NAME, status_init_end())
+    RUNNING_START_TIME = get_current_time()
     print("Initialization complete.")
 
 
-get_from_storage(CURRENT_ACTIVE_USER)
-initialize_sensor()
-init_audio()
-load_audio(CURRENT_ACTIVE_USER, CURRENT_AUDIO_SAMPLE)
+def motion_sensor():
+    """Main motion sensor program"""
+    initialize_sensor()
 
-# Detection loop
-CURRENT_STATE = False
-PREVIOUS_STATE = False
-RUNTIME_INTERVAL = 20
+    # Detection loop
+    current_state = False
+    previous_state = False
+    runtime_interval = 20
+    while True:
+        current_state = pir.motion_detected
 
-while True:
-    CURRENT_STATE = pir.motion_detected
+        if current_state is True and previous_state is False:
+            print("Motion detected!")
+            update_data_to_database(COMPONENT_NAME, status_detected())
+            play_audio()
+            previous_state = True
 
-    if CURRENT_STATE is True and PREVIOUS_STATE is False:
-        print("Motion detected!")
-        update_data_to_database(
-            COMPONENT_NAME,
-            {"detected": True, "time_detected": get_current_formatted_time()},
-        )
-        play_audio()
-        PREVIOUS_STATE = True
+        elif current_state is False and previous_state is True:
+            print("Waiting for motion...")
+            update_data_to_database(COMPONENT_NAME, status_undetected())
+            previous_state = False
 
-    elif CURRENT_STATE is False and PREVIOUS_STATE is True:
-        print("Waiting for motion...")
-        update_data_to_database(COMPONENT_NAME, {"detected": False})
-        PREVIOUS_STATE = False
+        sleep(1)
+        current_time = get_current_time()
+        time_delta = current_time - RUNNING_START_TIME
 
-    sleep(1)
-    current_time = get_current_time()
-    time_delta = current_time - CURRENT_RUNNING_TIME
-
-    if time_delta % RUNTIME_INTERVAL == 0:
-        update_data_to_database(COMPONENT_NAME, {"time_running": time_delta})
+        if time_delta % runtime_interval == 0:
+            update_data_to_database(COMPONENT_NAME, status_running_time(time_delta))

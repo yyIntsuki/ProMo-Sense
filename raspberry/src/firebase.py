@@ -23,8 +23,15 @@ def get_current_user():
     """Gets currently active user on web app and set and user to serve"""
     active_user = database.child("users").child("active_user").get()
     for user in active_user.each():
-        print("Successfully found user with UID: " + user.val())
         return user.val()
+
+
+def get_current_volume():
+    """Gets currently active user on web app and set and user to serve"""
+    audio_module = database.child("data").child("audio_module").get()
+    for data in audio_module.each():
+        if data.key() == "volume":
+            return data.val()
 
 
 def set_data_to_database(component_name, data):
@@ -37,12 +44,7 @@ def update_data_to_database(component_name, data):
     database.child("data").child(component_name).update(data)
 
 
-def fetch_from_database(component_name):
-    """Fetches data from firebase"""
-    return database.child("data").child(component_name).get().val()
-
-
-def get_from_storage(user):
+def get_files_from_storage(user):
     """Gets file names from Firebase storage path"""
     path = STORAGE_REMOTE_PATH + user
     name_list = storage.bucket.list_blobs(prefix=path)
