@@ -1,9 +1,7 @@
 import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
-import {
-    getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange
-} from "../firebaseModel";
+import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
 export default function App() {
@@ -12,8 +10,9 @@ export default function App() {
     const [volume, setVolume] = useState(0.5);
     const [audioUrls, setAudioUrls] = useState([]);
     const [motionSensorData, setMotionSensorData] = useState(null);
-    const audioRef = useRef(null);
     const [lockTime, setLockTime] = useState(5);
+    const audioRef = useRef(null);
+
 
     useEffect(() => {
         if (currentUser) {
@@ -24,10 +23,7 @@ export default function App() {
             getAudioFiles(currentUser.uid)
                 .then(urls => { setAudioUrls(urls); })
                 .catch(error => { console.error("Error loading audio files:", error); });
-
-            onMotionSensorChange((data) => {
-                setMotionSensorData(data);
-            });
+            onMotionSensorChange((data) => { setMotionSensorData(data); });
         }
     }, [currentUser]);
 
@@ -109,8 +105,8 @@ export default function App() {
                                 <>
                                     <p>STATUS: <span>{motionSensorData.detected ? 'DETECTED' : 'NOT DETECTED'}</span></p>
                                     <p>INITIALIZED: <span>{motionSensorData.initialized ? 'TRUE' : 'FALSE'}</span></p>
-                                    <p>TIME DETECTED: <span>{motionSensorData.time_detected}</span></p>
-                                    <p>TIME RUNNING: <span>{motionSensorData.time_running}</span></p>
+                                    <p>TIME DETECTED: <span>{motionSensorData.time_detected ? motionSensorData.time_detected : '-'}</span></p>
+                                    <p>TIME RUNNING: <span>{motionSensorData.time_running ? `${motionSensorData.time_running} (SEC)` : '-'}</span></p>
                                 </>
                                 : <p>Loading motion sensor data...</p>
                             }
@@ -119,7 +115,7 @@ export default function App() {
                             <h3 className="item_title">Code-lock</h3>
                             <p>STATUS: <span>INACTIVE</span></p>
                             <p>REMAINING TIME: <span>-</span></p>
-                            <p>LOCK-TIME(MIN): <span>5</span></p>
+                            <p>LOCK-TIME: <span>5 (MIN)</span></p>
                         </div>
                     </div>
                     <div className='app_category'>
@@ -162,9 +158,10 @@ export default function App() {
                                 </div>
                             </div>
                             <div className="item_detail">
-                                <p>LOCK-TIME(MIN):</p>
+                                <p>LOCK-TIME:</p>
                                 <div className="detail_row">
                                     <input className="lock_time_input" type="number" onChange={handleManualLockTimeInput} value={lockTime} step="1" />
+                                    <p>(MIN)</p>
                                     <button onClick={handleManualLockTime}>APPLY</button>
                                 </div>
                             </div>
