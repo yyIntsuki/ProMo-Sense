@@ -106,7 +106,7 @@ export default function App() {
                                     <p>STATUS: <span>{motionSensorData.detected ? 'DETECTED' : 'NOT DETECTED'}</span></p>
                                     <p>INITIALIZED: <span>{motionSensorData.initialized ? 'TRUE' : 'FALSE'}</span></p>
                                     <p>TIME DETECTED: <span>{motionSensorData.time_detected ? motionSensorData.time_detected : '-'}</span></p>
-                                    <p>TIME RUNNING: <span>{motionSensorData.time_running ? `${motionSensorData.time_running} (SEC)` : '-'}</span></p>
+                                    <p>TIME RUNNING: <span>{!isNaN(motionSensorData.time_running) ? `${motionSensorData.time_running} (SEC)` : '-'}</span></p>
                                 </>
                                 : <p>Loading motion sensor data...</p>
                             }
