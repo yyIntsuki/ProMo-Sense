@@ -78,5 +78,20 @@ function onMotionSensorChange(callback) {
         (snapshot) => { callback(snapshot.exists() ? snapshot.val() : null); },
         (error) => { console.error("Failed to fetch motion sensor data:", error); });
 }
+function setManualLock(isActivated) {
+    const manualLockRef = ref(database, "data/manual_lock");
+    const timeNowInSweden = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
+    set(manualLockRef, { activated: isActivated, timestamp: timeNowInSweden })
+        .catch(error => console.error("Failed to set manual lock status:", error));
+}
 
-export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase, onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange };
+function setManualLockTime(lockTime) {
+    const manualLockTimeRef = ref(database, "data/manual_lock_time");
+    const timeNowInSweden = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
+    set(manualLockTimeRef, { lockTime, timestamp: timeNowInSweden })
+        .catch(error => console.error("Failed to set manual lock time:", error));
+}
+
+
+
+export { auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase, onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange,setManualLock,setManualLockTime };

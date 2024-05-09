@@ -3,6 +3,8 @@ import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
+import { setManualLock } from "../firebaseModel";
+import { setManualLockTime } from "../firebaseModel";
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -79,8 +81,16 @@ export default function App() {
 
     function handleManualLock(event) {
         event.preventDefault();
-        /* TODO? */
+        setManualLock(true)
+            .then(() => {
+                console.log("Manual lock activated.");
+            })
+            .catch((error) => {
+                console.error("Error activating manual lock:", error);
+            });
     }
+    
+    
 
     function handleManualLockTimeInput(event) {
         event.preventDefault();
@@ -90,7 +100,13 @@ export default function App() {
 
     function handleManualLockTime(event) {
         event.preventDefault();
-        /* TODO? */
+        setManualLockTime(lockTime)
+            .then(() => {
+                console.log(`Manual lock time set to ${lockTime} minutes.`);
+            })
+            .catch((error) => {
+                console.error("Error setting manual lock time:", error);
+            });
     }
 
     return (
