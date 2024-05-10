@@ -84,6 +84,26 @@ function setVolumeInDatabase(volume) {
         });
 }
 
+function onChosenAudioChange(callback) {
+    const chosenAudioRef = ref(database, "data/audio_module/chosen_sound");
+    onValue(chosenAudioRef, (snapshot) => {
+        callback(snapshot.exists() ? snapshot.val() : null);
+    }, (error) => {
+        console.error("Failed to fetch chosen audio:", error);
+    });
+}
+
+async function setChosenAudioFile(fileUrl) {
+    const chosenAudioRef = ref(database, "data/audio_module/chosen_sound");
+    try {
+        await set(chosenAudioRef, fileUrl);
+        console.log(`Chosen audio file set to: ${fileUrl}`);
+        alert("Audio file set successfully!");
+    } catch (error) {
+        console.error("Failed to set chosen audio file:", error);
+    }
+}
+
 /* Motion sensor module */
 function onMotionSensorChange(callback) {
     const motionSensorRef = ref(database, "data/motion_sensor");
@@ -108,21 +128,9 @@ function setManualLockTime(lockTime) {
         .catch(error => console.error("Failed to set manual lock time:", error));
 }
 
-/* Set chosen audio file */
-async function setChosenAudioFile(fileUrl) {
-    const chosenAudioRef = ref(database, "data/audio_module/chosen_sound");
-    try {
-        await set(chosenAudioRef, fileUrl);
-        console.log(`Chosen audio file set to: ${fileUrl}`);
-        alert("Audio file set successfully!");
-    } catch (error) {
-        console.error("Failed to set chosen audio file:", error);
-    }
-}
-
 export {
     auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult,
     signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase,
-    onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange, setManualLock,
-    setManualLockTime, setChosenAudioFile
+    onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange,
+    setManualLock, setManualLockTime, setChosenAudioFile, onChosenAudioChange
 };

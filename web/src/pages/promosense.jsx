@@ -3,7 +3,8 @@ import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import {
     getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange,
-    onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile
+    onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile,
+    onChosenAudioChange
 } from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
 
@@ -28,6 +29,14 @@ export default function App() {
 
             onMotionSensorChange((data) => {
                 setMotionSensorData(data);
+            });
+
+            onChosenAudioChange((fileUrl) => {
+                setSelectedAudioUrl(fileUrl || "");
+                if (fileUrl && audioRef.current) {
+                    audioRef.current.src = fileUrl;
+                    audioRef.current.load();
+                }
             });
         }
     }, [currentUser]);
@@ -160,7 +169,7 @@ export default function App() {
                                 </div>
                             </div>
                             <div className='item_detail'>
-                                <p>VOLUMEz:</p>
+                                <p>VOLUME:</p>
                                 <div className="detail_row">
                                     <button onClick={decreaseVolume}>－</button>
                                     <span> {Math.round(volume * 100)}％</span>
