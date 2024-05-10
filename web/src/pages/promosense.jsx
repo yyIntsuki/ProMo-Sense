@@ -1,10 +1,11 @@
 import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
-import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange } from "../firebaseModel";
+import {
+    getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange,
+    onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile
+} from "../firebaseModel";
 import { UserContext } from "../contexts/userContext";
-import { setManualLock } from "../firebaseModel";
-import { setManualLockTime } from "../firebaseModel";
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -15,7 +16,6 @@ export default function App() {
     const [lockTime, setLockTime] = useState(5);
     const audioRef = useRef(null);
 
-
     useEffect(() => {
         if (currentUser) {
             onVolumeChange((value) => {
@@ -25,7 +25,10 @@ export default function App() {
             getAudioFiles(currentUser.uid)
                 .then(urls => { setAudioUrls(urls); })
                 .catch(error => { console.error("Error loading audio files:", error); });
-            onMotionSensorChange((data) => { setMotionSensorData(data); });
+
+            onMotionSensorChange((data) => {
+                setMotionSensorData(data);
+            });
         }
     }, [currentUser]);
 
@@ -60,6 +63,15 @@ export default function App() {
         }
     }
 
+    function chooseAudio(event) {
+        event.preventDefault();
+        if (selectedAudioUrl) {
+            setChosenAudioFile(selectedAudioUrl);
+        } else {
+            alert("Please select a sound first!");
+        }
+    }
+
     function playAudio(event) {
         event.preventDefault();
         if (audioRef.current) { audioRef.current.play(); }
@@ -89,13 +101,10 @@ export default function App() {
                 console.error("Error activating manual lock:", error);
             });
     }
-    
-    
 
     function handleManualLockTimeInput(event) {
         event.preventDefault();
         setLockTime(event.target.value);
-        /* TODO? */
     }
 
     function handleManualLockTime(event) {
@@ -147,10 +156,11 @@ export default function App() {
                                         {audioUrls.map((url, index) => (<option key={index} value={url}>{`Sound ${index + 1}`}</option>))}
                                     </select>
                                     <button onClick={playAudio}>Test</button>
+                                    <button onClick={chooseAudio}>Choose</button>
                                 </div>
                             </div>
                             <div className='item_detail'>
-                                <p>VOLUME:</p>
+                                <p>VOLUMEz:</p>
                                 <div className="detail_row">
                                     <button onClick={decreaseVolume}>－</button>
                                     <span> {Math.round(volume * 100)}％</span>
