@@ -1,12 +1,12 @@
 import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
+import { UserContext } from "../contexts/userContext";
 import {
     getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange,
     onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile,
     onChosenAudioChange
 } from "../firebaseModel";
-import { UserContext } from "../contexts/userContext";
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -23,13 +23,12 @@ export default function App() {
                 setVolume(value);
                 if (audioRef.current) { audioRef.current.volume = value; }
             });
+
             getAudioFiles(currentUser.uid)
                 .then(urls => { setAudioUrls(urls); })
                 .catch(error => { console.error("Error loading audio files:", error); });
 
-            onMotionSensorChange((data) => {
-                setMotionSensorData(data);
-            });
+            onMotionSensorChange((data) => { setMotionSensorData(data); });
 
             onChosenAudioChange((fileUrl) => {
                 setSelectedAudioUrl(fileUrl || "");
@@ -74,11 +73,8 @@ export default function App() {
 
     function chooseAudio(event) {
         event.preventDefault();
-        if (selectedAudioUrl) {
-            setChosenAudioFile(selectedAudioUrl);
-        } else {
-            alert("Please select a sound first!");
-        }
+        if (selectedAudioUrl) { setChosenAudioFile(selectedAudioUrl); }
+        else { alert("Please select a sound first!"); }
     }
 
     function playAudio(event) {
@@ -93,9 +89,7 @@ export default function App() {
             uploadFile(file, currentUser.uid)
                 .then(() => {
                     getAudioFiles(currentUser.uid)
-                        .then((urls) => {
-                            setAudioUrls(urls);
-                        });
+                        .then((urls) => { setAudioUrls(urls); });
                 });
         } else { console.error("No file selected or user not logged in!"); }
     }
@@ -103,12 +97,8 @@ export default function App() {
     function handleManualLock(event) {
         event.preventDefault();
         setManualLock(true)
-            .then(() => {
-                console.log("Manual lock activated.");
-            })
-            .catch((error) => {
-                console.error("Error activating manual lock:", error);
-            });
+            .then(() => { console.log("Manual lock activated."); })
+            .catch((error) => { console.error("Error activating manual lock:", error); });
     }
 
     function handleManualLockTimeInput(event) {
@@ -119,12 +109,8 @@ export default function App() {
     function handleManualLockTime(event) {
         event.preventDefault();
         setManualLockTime(lockTime)
-            .then(() => {
-                console.log(`Manual lock time set to ${lockTime} minutes.`);
-            })
-            .catch((error) => {
-                console.error("Error setting manual lock time:", error);
-            });
+            .then(() => { console.log(`Manual lock time set to ${lockTime} minutes.`); })
+            .catch((error) => { console.error("Error setting manual lock time:", error); });
     }
 
     return (
@@ -140,7 +126,7 @@ export default function App() {
                                     <p>STATUS: <span>{motionSensorData.detected ? 'DETECTED' : 'NOT DETECTED'}</span></p>
                                     <p>INITIALIZED: <span>{motionSensorData.initialized ? 'TRUE' : 'FALSE'}</span></p>
                                     <p>TIME DETECTED: <span>{motionSensorData.time_detected ? motionSensorData.time_detected : '-'}</span></p>
-                                    <p>TIME RUNNING: <span>{!isNaN(motionSensorData.time_running) ? `${motionSensorData.time_running} (SEC)` : '-'}</span></p>
+                                    <p>TIME RUNNING: <span>{motionSensorData.time_running ? `${motionSensorData.time_running} (SEC)` : '-'}</span></p>
                                 </>
                                 : <p>Loading motion sensor data...</p>
                             }
@@ -164,8 +150,8 @@ export default function App() {
                                         <option value="">Select a sound</option>
                                         {audioUrls.map((url, index) => (<option key={index} value={url}>{`Sound ${index + 1}`}</option>))}
                                     </select>
-                                    <button onClick={playAudio}>Test</button>
-                                    <button onClick={chooseAudio}>Choose</button>
+                                    {/* <button onClick={playAudio}>TEST</button> */}
+                                    <button onClick={chooseAudio}>CHOOSE</button>
                                 </div>
                             </div>
                             <div className='item_detail'>
