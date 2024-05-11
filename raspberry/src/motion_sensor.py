@@ -7,8 +7,8 @@ Module for handling motion sensor main functionality
 from time import sleep
 from gpiozero import MotionSensor
 from utils import get_current_time, get_current_formatted_time
-from firebase import set_data_to_database, update_data_to_database
 from audio import play_audio
+import firebase
 
 # Pin configuration
 PIR_PIN_OUT = 21  # GPIO21, pin 40 on Raspberry
@@ -20,6 +20,7 @@ RUNNING_START_TIME = None
 LAST_TIME_DETECTED = None
 
 
+# Status templates
 def status_init_start():
     """Function to reset all data values"""
     return {
@@ -50,11 +51,11 @@ def status_running_time(time_delta):
     return {"time_running": time_delta}
 
 
-def initialize_sensor():
+def initialize():
     """Sensor initialization"""
     global RUNNING_START_TIME
 
-    set_data_to_database(COMPONENT_NAME, status_init_start())
+    firebase.set_data_to_database(COMPONENT_NAME, status_init_start())
     print("Sensor initializing, Please wait...")
 
     seconds = 0
@@ -64,14 +65,13 @@ def initialize_sensor():
         sleep(1)
         seconds += 1
 
-    update_data_to_database(COMPONENT_NAME, status_init_end())
+    firebase.update_data_to_database(COMPONENT_NAME, status_init_end())
     RUNNING_START_TIME = get_current_time()
     print("Initialization complete.")
 
 
-def motion_sensor():
+def main():
     """Main motion sensor program"""
-    initialize_sensor()
 
     # Detection loop
     current_state = False
@@ -82,13 +82,13 @@ def motion_sensor():
 
         if current_state is True and previous_state is False:
             print("Motion detected!")
-            update_data_to_database(COMPONENT_NAME, status_detected())
+            firebase.update_data_to_database(COMPONENT_NAME, status_detected())
             play_audio()
             previous_state = True
 
         elif current_state is False and previous_state is True:
             print("Waiting for motion...")
-            update_data_to_database(COMPONENT_NAME, status_undetected())
+            firebase.update_data_to_database(COMPONENT_NAME, status_undetected())
             previous_state = False
 
         sleep(1)
@@ -96,4 +96,4 @@ def motion_sensor():
         time_delta = current_time - RUNNING_START_TIME
 
         if time_delta % runtime_interval == 0:
-            update_data_to_database(COMPONENT_NAME, status_running_time(time_delta))
+            firebase.update_data_to_database(COMPONENT_NAME, status_running_time(time_delta))
