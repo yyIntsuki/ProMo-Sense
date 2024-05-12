@@ -17,7 +17,7 @@ storage = firebase.storage()
 # Global variables
 ## Paths
 STORAGE_REMOTE_PATH = 'user_files'
-STORAGE_LOCAL_PATH = '../downloads'
+STORAGE_LOCAL_PATH = 'downloads'
 ## User
 CURRENT_ACTIVE_USER = None
 CURRENT_USER_CHANGED = False
@@ -33,8 +33,8 @@ def get_audio_samples():
     global CURRENT_ACTIVE_USER
     path = f'{STORAGE_REMOTE_PATH}/{CURRENT_ACTIVE_USER}'
     name_list = storage.bucket.list_blobs(prefix=path)
-
-    if check_path_exist is False:
+    
+    if check_path_exist(STORAGE_LOCAL_PATH) is False:
         create_folder(STORAGE_LOCAL_PATH)
 
     for file in name_list:
@@ -42,12 +42,12 @@ def get_audio_samples():
         file_name = file.name.split('/')[2]
         full_path = f'{STORAGE_LOCAL_PATH}/{user_folder}/{file_name}'
 
-        create_folder(STORAGE_LOCAL_PATH + user_folder)
+        create_folder(f'{STORAGE_LOCAL_PATH}/{user_folder}')
         if not check_path_exist(full_path):
             file.download_to_filename(full_path)
-            print(f'get_from_storage: {full_path}')
+            print(f'Downloading {full_path}.')
         elif check_path_exist(full_path):
-            print(f'get_from_storage: {file_name} already exists.')
+            print(f'{file_name} already exists.')
 
 
 def set_data_to_database(component_name, data):
@@ -80,10 +80,12 @@ def listen_for_changes(selection):
             CURRENT_SAMPLE_CHANGED = True
             CURRENT_AUDIO_SAMPLE = message['data']
             print(f'Sample is now set to {message["data"]}')
+            CURRENT_SAMPLE_CHANGED = False
         if selection == 'volume':
             CURRENT_VOLUME_CHANGED = True
             CURRENT_AUDIO_VOLUME = message['data']
             print(f'Volume is now set to {message["data"]}')
+            CURRENT_VOLUME_CHANGED = False
             
     if selection == 'user':
         path = 'users/active_user'
@@ -94,5 +96,3 @@ def listen_for_changes(selection):
 
     database.child(path).stream(stream_handler)
     print(f'Listening to changes for {selection}...')
-
-listen_for_changes('sample')

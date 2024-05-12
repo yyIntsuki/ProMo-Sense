@@ -86,7 +86,6 @@ def main():
             previous_state = True
 
         elif current_state is False and previous_state is True:
-            print('Waiting for motion...')
             update_data_to_database(COMPONENT_NAME, status_undetected())
             previous_state = False
 
