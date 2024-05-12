@@ -18,7 +18,7 @@ def load_audio():
     SAMPLE_FILE_NAME = f'{STORAGE_LOCAL_PATH}{CURRENT_ACTIVE_USER}/{CURRENT_AUDIO_SAMPLE}'
     
     if not check_path_exist(SAMPLE_FILE_NAME):
-        get_audio_samples(CURRENT_ACTIVE_USER)
+        get_audio_samples()
 
     mixer.music.load(SAMPLE_FILE_NAME)
     print(f'Sample loaded: {SAMPLE_FILE_NAME}')
@@ -34,3 +34,4 @@ def play_audio():
     '''Plays the loaded audio sample if not already playing'''
     if not mixer.music.get_busy():
         mixer.music.play()
+        print('Playing sample...')

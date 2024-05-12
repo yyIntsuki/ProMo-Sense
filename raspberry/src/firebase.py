@@ -28,12 +28,14 @@ CURRENT_SAMPLE_CHANGED = False
 CURRENT_AUDIO_VOLUME = None
 CURRENT_VOLUME_CHANGED = False
 
-def get_audio_samples(user):
-    '''Gets file names from Firebase storage path'''
-    path = f'{STORAGE_REMOTE_PATH}/{user}'
+def get_audio_samples():
+    '''Gets file names from Firebase storage path and downloads them for current user'''
+    global CURRENT_ACTIVE_USER
+    path = f'{STORAGE_REMOTE_PATH}/{CURRENT_ACTIVE_USER}'
     name_list = storage.bucket.list_blobs(prefix=path)
 
-    create_folder(STORAGE_LOCAL_PATH)
+    if check_path_exist is False:
+        create_folder(STORAGE_LOCAL_PATH)
 
     for file in name_list:
         user_folder = file.name.split('/')[1]
@@ -60,12 +62,6 @@ def update_data_to_database(component_name, data):
 
 def listen_for_changes(selection):
     '''Indicates if the active data has been changed, possible arguments: user, sample, volume'''
-    global CURRENT_USER_CHANGED
-    global CURRENT_ACTIVE_USER
-    global CURRENT_AUDIO_SAMPLE
-    global CURRENT_SAMPLE_CHANGED
-    global CURRENT_AUDIO_VOLUME
-    global CURRENT_VOLUME_CHANGED
 
     def stream_handler(message):
         global CURRENT_USER_CHANGED
@@ -78,16 +74,16 @@ def listen_for_changes(selection):
         if selection == 'user':
             CURRENT_USER_CHANGED = True
             CURRENT_ACTIVE_USER = message['data']['uid']
-            print(f'User has been changed to {message["data"]["uid"]}')
+            print(f'User is now set to {message["data"]["uid"]}')
             CURRENT_USER_CHANGED = False
         if selection == 'sample':
             CURRENT_SAMPLE_CHANGED = True
             CURRENT_AUDIO_SAMPLE = message['data']
-            print(f'Sample been changed to {message["data"]}')
+            print(f'Sample is now set to {message["data"]}')
         if selection == 'volume':
             CURRENT_VOLUME_CHANGED = True
             CURRENT_AUDIO_VOLUME = message['data']
-            print(f'Volume has been changed to {message["data"]}')
+            print(f'Volume is now set to {message["data"]}')
             
     if selection == 'user':
         path = 'users/active_user'
