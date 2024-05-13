@@ -9,8 +9,6 @@ import firebase
 import audio
 import motion_sensor
 
-MODULE_DEACTIVATE = False
-
 try:
     # Parallelize motion sensor loop
     motion_sensor_thread = Thread(target=motion_sensor.main)
