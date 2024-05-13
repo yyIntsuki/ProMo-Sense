@@ -77,8 +77,8 @@ def listen_for_changes(selection):
             CURRENT_USER_CHANGED = False
         if selection == 'sample':
             CURRENT_SAMPLE_CHANGED = True
-            CURRENT_AUDIO_SAMPLE = message['data']
-            print(f'Sample is now set to {message["data"]}')
+            CURRENT_AUDIO_SAMPLE = message['data']['name']
+            print(f'Sample is now set to {message["data"]["name"]}')
             CURRENT_SAMPLE_CHANGED = False
         if selection == 'volume':
             CURRENT_VOLUME_CHANGED = True
@@ -89,7 +89,7 @@ def listen_for_changes(selection):
     if selection == 'user':
         path = 'users/active_user'
     if selection == 'sample':
-        path = 'data/audio_module/sample'
+        path = 'data/audio_module/chosen_sound'
     if selection == 'volume':
         path = 'data/audio_module/volume'
 
