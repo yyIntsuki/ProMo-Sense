@@ -40,19 +40,21 @@ try:
     # Detect and handle user changes
     while True:
         if firebase.CURRENT_USER_CHANGED or firebase.CURRENT_SAMPLE_CHANGED:
-            firebase.get_audio_samples()
-            audio.load_audio(firebase.STORAGE_LOCAL_PATH, firebase.CURRENT_ACTIVE_USER, firebase.CURRENT_AUDIO_SAMPLE)
             firebase.CURRENT_USER_CHANGED = False
             firebase.CURRENT_SAMPLE_CHANGED = False
+            firebase.get_audio_samples()
+            audio.load_audio(firebase.STORAGE_LOCAL_PATH, firebase.CURRENT_ACTIVE_USER, firebase.CURRENT_AUDIO_SAMPLE)
+
         if firebase.CURRENT_VOLUME_CHANGED:
-            audio.set_volume(firebase.CURRENT_AUDIO_VOLUME)
             firebase.CURRENT_VOLUME_CHANGED = False
+            audio.set_volume(firebase.CURRENT_AUDIO_VOLUME)
+
         if firebase.CURRENT_LOCK_CHANGED:
+            firebase.CURRENT_LOCK_CHANGED = False
             if firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION > get_current_unix_time():
                 print(f'''Code-lock is active!
                     Current time: {convert_to_str_time(get_current_unix_time())}
                     locked until: {convert_to_str_time(firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION)}''')
-            firebase.CURRENT_LOCK_CHANGED = False
         sleep(1)
     
 except KeyboardInterrupt:

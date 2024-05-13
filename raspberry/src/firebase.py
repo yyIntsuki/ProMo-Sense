@@ -50,8 +50,6 @@ def get_audio_samples():
         if not check_path_exist(full_path):
             file.download_to_filename(full_path)
             print(f'Downloading {full_path}.')
-        elif check_path_exist(full_path):
-            print(f'{file_name} already exists.')
 
 
 def set_data_to_database(component_name, data):
@@ -85,17 +83,17 @@ def listen_for_changes(selection):
         if selection == 'user':
             CURRENT_USER_CHANGED = True
             CURRENT_ACTIVE_USER = message['data']['uid']
-            print(f'User is now set to {message["data"]["uid"]}')
+            print(f'User: {message["data"]["uid"]}')
             
         if selection == 'sample':
             CURRENT_SAMPLE_CHANGED = True
             CURRENT_AUDIO_SAMPLE = message['data']['name']
-            print(f'Sample is now set to {message["data"]["name"]}')
+            print(f'Sample: {message["data"]["name"]}')
             
         if selection == 'volume':
             CURRENT_VOLUME_CHANGED = True
             CURRENT_AUDIO_VOLUME = message['data']
-            print(f'Volume is now set to {message["data"]}')
+            print(f'Volume: {message["data"]}')
             
         if selection == 'codelock':
             CURRENT_LOCK_CHANGED = True
@@ -105,7 +103,7 @@ def listen_for_changes(selection):
                 CURRENT_LOCK_TIME = message['data']['timestamp']
             if 'duration' in message['data']:
                 CURRENT_LOCK_DURATION = min_to_sec(message['data']['duration'])
-            print(f'Code-lock is now set to STATUS({CURRENT_LOCK_STATUS}), TIME({CURRENT_LOCK_TIME}), DURATION({CURRENT_LOCK_DURATION})')
+            print(f'Code-lock: STATUS({CURRENT_LOCK_STATUS}), TIME({CURRENT_LOCK_TIME}), DURATION({CURRENT_LOCK_DURATION})')
             
     if selection == 'user':
         path = 'users/active_user'
