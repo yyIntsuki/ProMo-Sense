@@ -101,8 +101,7 @@ function onMotionSensorChange(callback) {
 /* Code-lock module */
 const codeLockRef = ref(database, "data/code_lock");
 function setManualLock(activated) {
-    const timeNowInSweden = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
-    update(codeLockRef, { activated, timestamp: timeNowInSweden })
+    update(codeLockRef, { activated, timestamp: Math.floor(Date.now() / 1000) })
         .catch(error => console.error("Failed to set manual lock status:", error));
 }
 
