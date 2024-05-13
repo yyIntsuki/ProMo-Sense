@@ -10,7 +10,7 @@ import {
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
-    const [selectedAudioUrl, setSelectedAudioUrl] = useState("");
+    const [selectedAudioUrl, setSelectedAudioUrl] = useState(localStorage.getItem('selectedAudioUrl') || "");
     const [volume, setVolume] = useState(0.5);
     const [audioUrls, setAudioUrls] = useState([]);
     const [motionSensorData, setMotionSensorData] = useState(null);
@@ -21,22 +21,28 @@ export default function App() {
         if (currentUser) {
             onVolumeChange((value) => {
                 setVolume(value);
-                if (audioRef.current) { audioRef.current.volume = value; }
+                if (audioRef.current) {
+                    audioRef.current.volume = value;
+                }
             });
 
             getAudioFiles(currentUser.uid)
-                .then(urls => { setAudioUrls(urls); })
+                .then(urls => {
+                    setAudioUrls(urls);
+                    if (selectedAudioUrl) {
+                        const audioData = urls.find(audio => audio.url === selectedAudioUrl);
+                        if (audioData && audioRef.current) {
+                            audioRef.current.src = audioData.url;
+                            audioRef.current.addEventListener('loadedmetadata', () => {
+                                audioRef.current.volume = volume;
+                            });
+                            audioRef.current.load();
+                        }
+                    }
+                })
                 .catch(error => { console.error("Error loading audio files:", error); });
 
             onMotionSensorChange((data) => { setMotionSensorData(data); });
-
-            onChosenAudioChange((fileUrl) => {
-                setSelectedAudioUrl(fileUrl || "");
-                if (fileUrl && audioRef.current) {
-                    audioRef.current.src = fileUrl;
-                    audioRef.current.load();
-                }
-            });
         }
     }, [currentUser]);
 
@@ -44,42 +50,57 @@ export default function App() {
         event.preventDefault();
         const newVolume = Math.min(1, Number((volume + 0.1).toFixed(2)));
         setVolume(newVolume);
-        if (audioRef.current) { audioRef.current.volume = newVolume; }
+        if (audioRef.current) {
+            audioRef.current.volume = newVolume;
+        }
     }
 
     function decreaseVolume(event) {
         event.preventDefault();
         const newVolume = Math.max(0, Number((volume - 0.1).toFixed(2)));
         setVolume(newVolume);
-        if (audioRef.current) { audioRef.current.volume = newVolume; }
+        if (audioRef.current) {
+            audioRef.current.volume = newVolume;
+        }
     }
 
     function applyVolume(event) {
         event.preventDefault();
         setVolumeInDatabase(volume);
+        if (audioRef.current) {
+            audioRef.current.volume = volume;
+        }
     }
 
     function handleAudioSelection(event) {
         event.preventDefault();
         const selectedUrl = event.target.value;
         setSelectedAudioUrl(selectedUrl);
-
-        if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current.src = selectedUrl;
-            audioRef.current.load();
-        }
+        localStorage.setItem('selectedAudioUrl', selectedUrl); // Save to local storage
     }
 
     function chooseAudio(event) {
         event.preventDefault();
-        if (selectedAudioUrl) { setChosenAudioFile(selectedAudioUrl); }
-        else { alert("Please select a sound first!"); }
+        const audioData = audioUrls.find(audio => audio.url === selectedAudioUrl);
+        if (audioData) {
+            setChosenAudioFile({url: audioData.url, name: audioData.name});
+            if (audioRef.current) {
+                audioRef.current.src = audioData.url;
+                audioRef.current.addEventListener('loadedmetadata', () => {
+                    audioRef.current.volume = volume;
+                });
+                audioRef.current.load();
+            }
+        } else {
+            alert("Please select a sound first!");
+        }
     }
 
     function playAudio(event) {
         event.preventDefault();
-        if (audioRef.current) { audioRef.current.play(); }
+        if (audioRef.current) {
+            audioRef.current.play();
+        }
     }
 
     function handleFileUpload(event) {
@@ -89,7 +110,7 @@ export default function App() {
             uploadFile(file, currentUser.uid)
                 .then(() => {
                     getAudioFiles(currentUser.uid)
-                        .then((urls) => { setAudioUrls(urls); });
+                        .then(urls => { setAudioUrls(urls); });
                 });
         } else { console.error("No file selected or user not logged in!"); }
     }
@@ -146,11 +167,10 @@ export default function App() {
                             <div className="item_detail">
                                 <p>SAMPLE:</p>
                                 <div className="detail_row">
-                                    <select className="audio_select" onChange={handleAudioSelection} value={selectedAudioUrl}>
+                                    <select className="audio_select" onChange={handleAudioSelection} value={selectedAudioUrl || ""}>
                                         <option value="">Select a sound</option>
-                                        {audioUrls.map((url, index) => (<option key={index} value={url}>{`Sound ${index + 1}`}</option>))}
+                                        {audioUrls.map((fileData, index) => (<option key={index} value={fileData.url}>{`Sound ${index + 1}`}</option>))}
                                     </select>
-                                    {/* <button onClick={playAudio}>TEST</button> */}
                                     <button onClick={chooseAudio}>CHOOSE</button>
                                 </div>
                             </div>

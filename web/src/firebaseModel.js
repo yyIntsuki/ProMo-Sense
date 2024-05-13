@@ -1,12 +1,15 @@
 import { initializeApp } from "firebase/app";
-import firebaseConfig from "./firebaseConfig";
-import { getDatabase, ref, set, onValue } from "firebase/database";
-import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import {
     getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
     getRedirectResult, signOut, onAuthStateChanged
 } from "firebase/auth";
-
+import {
+    getDatabase, ref, set, onValue
+} from "firebase/database";
+import {
+    getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll
+} from "firebase/storage";
+import firebaseConfig from "./firebaseConfig";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -42,8 +45,11 @@ async function getAudioFiles(userId) {
     const audioListRef = storageRef(storage, `user_files/${userId}/`);
     try {
         const result = await listAll(audioListRef);
-        const fileUrls = await Promise.all(result.items.map(item => getDownloadURL(item)));
-        return fileUrls;
+        const fileDatas = await Promise.all(result.items.map(async item => ({
+            url: await getDownloadURL(item),
+            name: item.name
+        })));
+        return fileDatas;
     } catch (error) {
         console.error("Failed to fetch audio files:", error);
         return [];
@@ -82,7 +88,7 @@ function setVolumeInDatabase(volume) {
 }
 
 function onChosenAudioChange(callback) {
-    const chosenAudioRef = ref(database, "data/audio_module/sample");
+    const chosenAudioRef = ref(database, "data/audio_module/");
     onValue(chosenAudioRef, (snapshot) => {
         callback(snapshot.exists() ? snapshot.val() : null);
     }, (error) => {
@@ -90,26 +96,32 @@ function onChosenAudioChange(callback) {
     });
 }
 
-async function setChosenAudioFile(fileUrl) {
-    const chosenAudioRef = ref(database, "data/audio_module/sample");
+async function setChosenAudioFile(audioData) {
+    const chosenAudioRef = ref(database, "data/audio_module/chosen_sound");
     try {
-        await set(chosenAudioRef, fileUrl);
-        console.log(`Chosen audio file set to: ${fileUrl}`);
+        await set(chosenAudioRef, {
+            url: audioData.url,
+            name: audioData.name
+        });
+        console.log(`Chosen audio file set to: ${audioData.name} at ${audioData.url}`);
         alert("Audio file set successfully!");
+    } catch (error) {
+        console.error("Failed to set chosen audio file:", error);
     }
-    catch (error) { console.error("Failed to set chosen audio file:", error); }
 }
+
+
 
 /* Motion sensor module */
 function onMotionSensorChange(callback) {
     const motionSensorRef = ref(database, "data/motion_sensor");
-    onValue(motionSensorRef,
-        (snapshot) => { callback(snapshot.exists() ? snapshot.val() : null); },
-        (error) => { console.error("Failed to fetch motion sensor data:", error); });
+    onValue(motionSensorRef, (snapshot) => {
+        callback(snapshot.exists() ? snapshot.val() : null);
+    }, (error) => {
+        console.error("Failed to fetch motion sensor data:", error);
+    });
 }
 
-
-/* Code-lock module */
 function setManualLock(isActivated) {
     const manualLockRef = ref(database, "data/manual_lock");
     const timeNowInSweden = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
