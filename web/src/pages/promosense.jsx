@@ -2,11 +2,7 @@ import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
-import {
-    getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange,
-    onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile,
-    onChosenAudioChange
-} from "../firebaseModel";
+import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile } from "../firebaseModel";
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -21,9 +17,7 @@ export default function App() {
         if (currentUser) {
             onVolumeChange((value) => {
                 setVolume(value);
-                if (audioRef.current) {
-                    audioRef.current.volume = value;
-                }
+                if (audioRef.current) { audioRef.current.volume = value; }
             });
 
             getAudioFiles(currentUser.uid)
@@ -50,26 +44,20 @@ export default function App() {
         event.preventDefault();
         const newVolume = Math.min(1, Number((volume + 0.1).toFixed(2)));
         setVolume(newVolume);
-        if (audioRef.current) {
-            audioRef.current.volume = newVolume;
-        }
+        if (audioRef.current) { audioRef.current.volume = newVolume; }
     }
 
     function decreaseVolume(event) {
         event.preventDefault();
         const newVolume = Math.max(0, Number((volume - 0.1).toFixed(2)));
         setVolume(newVolume);
-        if (audioRef.current) {
-            audioRef.current.volume = newVolume;
-        }
+        if (audioRef.current) { audioRef.current.volume = newVolume; }
     }
 
     function applyVolume(event) {
         event.preventDefault();
         setVolumeInDatabase(volume);
-        if (audioRef.current) {
-            audioRef.current.volume = volume;
-        }
+        if (audioRef.current) { audioRef.current.volume = volume; }
     }
 
     function handleAudioSelection(event) {
@@ -83,24 +71,18 @@ export default function App() {
         event.preventDefault();
         const audioData = audioUrls.find(audio => audio.url === selectedAudioUrl);
         if (audioData) {
-            setChosenAudioFile({url: audioData.url, name: audioData.name});
+            setChosenAudioFile({ url: audioData.url, name: audioData.name });
             if (audioRef.current) {
                 audioRef.current.src = audioData.url;
-                audioRef.current.addEventListener('loadedmetadata', () => {
-                    audioRef.current.volume = volume;
-                });
+                audioRef.current.addEventListener('loadedmetadata', () => { audioRef.current.volume = volume; });
                 audioRef.current.load();
             }
-        } else {
-            alert("Please select a sound first!");
-        }
+        } else { alert("Please select a sound first!"); }
     }
 
     function playAudio(event) {
         event.preventDefault();
-        if (audioRef.current) {
-            audioRef.current.play();
-        }
+        if (audioRef.current) { audioRef.current.play(); }
     }
 
     function handleFileUpload(event) {
@@ -149,7 +131,8 @@ export default function App() {
                                     <p>TIME DETECTED: <span>{motionSensorData.time_detected ? motionSensorData.time_detected : '-'}</span></p>
                                     <p>TIME RUNNING: <span>{motionSensorData.time_running ? `${motionSensorData.time_running} (SEC)` : '-'}</span></p>
                                 </>
-                                : <p>Loading motion sensor data...</p>
+                                :
+                                <p>Loading motion sensor data...</p>
                             }
                         </div>
                         <div className="item">

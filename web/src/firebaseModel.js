@@ -1,14 +1,7 @@
 import { initializeApp } from "firebase/app";
-import {
-    getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect,
-    getRedirectResult, signOut, onAuthStateChanged
-} from "firebase/auth";
-import {
-    getDatabase, ref, set, onValue
-} from "firebase/database";
-import {
-    getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll
-} from "firebase/storage";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, set, update, onValue } from "firebase/database";
+import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
 import firebaseConfig from "./firebaseConfig";
 
 const app = initializeApp(firebaseConfig);
@@ -22,16 +15,11 @@ provider.addScope('profile');
 provider.addScope('email');
 
 async function setUserInDatabase(user) {
-    function currentTimeInSweden() {
-        const timeNow = new Date();
-        return timeNow.toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
-    }
-
     const userRef = ref(database, `users/${user.uid}`);
     return await set(userRef, {
         firstName: user.displayName?.split(" ")[0],
         email: user.email,
-        lastLogin: currentTimeInSweden()
+        lastLogin: new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" })
     });
 }
 
@@ -71,29 +59,21 @@ function onVolumeChange(callback) {
     const volumeRef = ref(database, "data/audio_module/volume");
     onValue(volumeRef, (snapshot) => {
         callback(snapshot.exists() ? snapshot.val() : null);
-    }, (error) => {
-        console.error("Failed to fetch volume:", error);
-    });
+    }, (error) => { console.error("Failed to fetch volume:", error); });
 }
 
 function setVolumeInDatabase(volume) {
     const volumeRef = ref(database, "data/audio_module/volume");
     set(volumeRef, volume)
-        .then(() => {
-            alert(`Volume saved to database: ${Math.round(volume * 100)}%`);
-        })
-        .catch((error) => {
-            console.error("Failed to set volume:", error);
-        });
+        .then(() => { alert(`Volume saved to database: ${Math.round(volume * 100)}%`); })
+        .catch((error) => { console.error("Failed to set volume:", error); });
 }
 
 function onChosenAudioChange(callback) {
     const chosenAudioRef = ref(database, "data/audio_module/");
-    onValue(chosenAudioRef, (snapshot) => {
-        callback(snapshot.exists() ? snapshot.val() : null);
-    }, (error) => {
-        console.error("Failed to fetch chosen audio:", error);
-    });
+    onValue(chosenAudioRef,
+        (snapshot) => { callback(snapshot.exists() ? snapshot.val() : null); },
+        (error) => { console.error("Failed to fetch chosen audio:", error); });
 }
 
 async function setChosenAudioFile(audioData) {
@@ -105,9 +85,7 @@ async function setChosenAudioFile(audioData) {
         });
         console.log(`Chosen audio file set to: ${audioData.name} at ${audioData.url}`);
         alert("Audio file set successfully!");
-    } catch (error) {
-        console.error("Failed to set chosen audio file:", error);
-    }
+    } catch (error) { console.error("Failed to set chosen audio file:", error); }
 }
 
 
@@ -115,24 +93,21 @@ async function setChosenAudioFile(audioData) {
 /* Motion sensor module */
 function onMotionSensorChange(callback) {
     const motionSensorRef = ref(database, "data/motion_sensor");
-    onValue(motionSensorRef, (snapshot) => {
-        callback(snapshot.exists() ? snapshot.val() : null);
-    }, (error) => {
-        console.error("Failed to fetch motion sensor data:", error);
-    });
+    onValue(motionSensorRef,
+        (snapshot) => { callback(snapshot.exists() ? snapshot.val() : null); },
+        (error) => { console.error("Failed to fetch motion sensor data:", error); });
 }
 
-function setManualLock(isActivated) {
-    const manualLockRef = ref(database, "data/manual_lock");
+/* Code-lock module */
+const codeLockRef = ref(database, "data/code_lock");
+function setManualLock(activated) {
     const timeNowInSweden = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
-    set(manualLockRef, { activated: isActivated, timestamp: timeNowInSweden })
+    set(codeLockRef, { activated, timestamp: timeNowInSweden })
         .catch(error => console.error("Failed to set manual lock status:", error));
 }
 
-function setManualLockTime(lockTime) {
-    const manualLockTimeRef = ref(database, "data/manual_lock_time");
-    const timeNowInSweden = new Date().toLocaleString("sv-SE", { timeZone: "Europe/Stockholm" });
-    set(manualLockTimeRef, { lockTime, timestamp: timeNowInSweden })
+function setManualLockTime(duration) {
+    update(codeLockRef, { duration })
         .catch(error => console.error("Failed to set manual lock time:", error));
 }
 
