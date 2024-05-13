@@ -27,9 +27,7 @@ export default function App() {
                         const audioData = urls.find(audio => audio.url === selectedAudioUrl);
                         if (audioData && audioRef.current) {
                             audioRef.current.src = audioData.url;
-                            audioRef.current.addEventListener('loadedmetadata', () => {
-                                audioRef.current.volume = volume;
-                            });
+                            audioRef.current.addEventListener('loadedmetadata', () => { audioRef.current.volume = volume; });
                             audioRef.current.load();
                         }
                     }
@@ -38,7 +36,7 @@ export default function App() {
 
             onMotionSensorChange((data) => { setMotionSensorData(data); });
         }
-    }, [currentUser]);
+    }, [currentUser, selectedAudioUrl, volume]);
 
     function increaseVolume(event) {
         event.preventDefault();
