@@ -7,7 +7,7 @@ Provides functions for Firebase database and storage access
 
 import pyrebase
 from firebase_config import config
-from utils import create_folder, check_path_exist
+from utils import create_folder, check_path_exist, min_to_sec
 
 # Initialize firebase app
 firebase = pyrebase.initialize_app(config)
@@ -27,6 +27,11 @@ CURRENT_SAMPLE_CHANGED = False
 ## Audio Volume
 CURRENT_AUDIO_VOLUME = None
 CURRENT_VOLUME_CHANGED = False
+## Code Lock
+CURRENT_LOCK_STATUS = False
+CURRENT_LOCK_TIME = None
+CURRENT_LOCK_DURATION = None
+CURRENT_LOCK_CHANGED = False
 
 def get_audio_samples():
     '''Gets file names from Firebase storage path and downloads them for current user'''
@@ -65,26 +70,42 @@ def listen_for_changes(selection):
     def stream_handler(message):
         global CURRENT_USER_CHANGED
         global CURRENT_ACTIVE_USER
+        
         global CURRENT_AUDIO_SAMPLE
         global CURRENT_SAMPLE_CHANGED
-        global CURRENT_AUDIO_VOLUME
-        global CURRENT_VOLUME_CHANGED
         
+        global CURRENT_VOLUME_CHANGED
+        global CURRENT_AUDIO_VOLUME
+        
+        global CURRENT_LOCK_CHANGED
+        global CURRENT_LOCK_STATUS
+        global CURRENT_LOCK_TIME
+        global CURRENT_LOCK_DURATION
+
         if selection == 'user':
             CURRENT_USER_CHANGED = True
             CURRENT_ACTIVE_USER = message['data']['uid']
             print(f'User is now set to {message["data"]["uid"]}')
-            CURRENT_USER_CHANGED = False
+            
         if selection == 'sample':
             CURRENT_SAMPLE_CHANGED = True
             CURRENT_AUDIO_SAMPLE = message['data']['name']
             print(f'Sample is now set to {message["data"]["name"]}')
-            CURRENT_SAMPLE_CHANGED = False
+            
         if selection == 'volume':
             CURRENT_VOLUME_CHANGED = True
             CURRENT_AUDIO_VOLUME = message['data']
             print(f'Volume is now set to {message["data"]}')
-            CURRENT_VOLUME_CHANGED = False
+            
+        if selection == 'codelock':
+            CURRENT_LOCK_CHANGED = True
+            if 'activated' in message['data']:
+                CURRENT_LOCK_STATUS = message['data']['activated']
+            if 'timestamp' in message['data']:
+                CURRENT_LOCK_TIME = message['data']['timestamp']
+            if 'duration' in message['data']:
+                CURRENT_LOCK_DURATION = min_to_sec(message['data']['duration'])
+            print(f'Code-lock is now set to STATUS({CURRENT_LOCK_STATUS}), TIME({CURRENT_LOCK_TIME}), DURATION({CURRENT_LOCK_DURATION})')
             
     if selection == 'user':
         path = 'users/active_user'
@@ -92,6 +113,8 @@ def listen_for_changes(selection):
         path = 'data/audio_module/chosen_sound'
     if selection == 'volume':
         path = 'data/audio_module/volume'
+    if selection == 'codelock':
+        path = 'data/code_lock'
 
     database.child(path).stream(stream_handler)
     print(f'Listening to changes for {selection}...')

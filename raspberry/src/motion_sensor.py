@@ -6,9 +6,10 @@ Module for handling motion sensor main functionality
 
 from time import sleep
 from gpiozero import MotionSensor
-from firebase import set_data_to_database, update_data_to_database
-from utils import get_current_time, get_current_formatted_time
-from audio import play_audio
+from utils import get_current_unix_time, get_current_formatted_time
+import firebase
+import audio
+
 
 # Pin configuration
 PIR_PIN_OUT = 21  # GPIO21, pin 40 on Raspberry
@@ -18,7 +19,6 @@ pir = MotionSensor(PIR_PIN_OUT)
 COMPONENT_NAME = 'motion_sensor'
 RUNNING_START_TIME = None
 LAST_TIME_DETECTED = None
-
 
 # Status templates
 def status_init_start():
@@ -55,7 +55,7 @@ def initialize():
     '''Sensor initialization'''
     global RUNNING_START_TIME
     
-    set_data_to_database(COMPONENT_NAME, status_init_start())
+    firebase.set_data_to_database(COMPONENT_NAME, status_init_start())
     print('Sensor initializing, Please wait...')
 
     seconds = 0
@@ -65,8 +65,8 @@ def initialize():
         sleep(1)
         seconds += 1
 
-    update_data_to_database(COMPONENT_NAME, status_init_end())
-    RUNNING_START_TIME = get_current_time()
+    firebase.update_data_to_database(COMPONENT_NAME, status_init_end())
+    RUNNING_START_TIME = get_current_unix_time()
     print('Initialization complete.')
 
 
@@ -75,23 +75,25 @@ def main():
     current_state = False
     previous_state = False
     runtime_interval = 20
+    
     # Detection loop
     while True:
-        current_state = pir.motion_detected
+        if get_current_unix_time() > firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION:
+            current_state = pir.motion_detected
 
-        if current_state is True and previous_state is False:
-            print('Motion detected!')
-            update_data_to_database(COMPONENT_NAME, status_detected())
-            play_audio()
-            previous_state = True
+            if current_state is True and previous_state is False:
+                print('Motion detected!')
+                firebase.update_data_to_database(COMPONENT_NAME, status_detected())
+                audio.play_audio()
+                previous_state = True
 
-        elif current_state is False and previous_state is True:
-            update_data_to_database(COMPONENT_NAME, status_undetected())
-            previous_state = False
+            elif current_state is False and previous_state is True:
+                firebase.update_data_to_database(COMPONENT_NAME, status_undetected())
+                previous_state = False
 
-        sleep(1)
-        current_time = get_current_time()
-        time_delta = current_time - RUNNING_START_TIME
+            sleep(1)
+            current_time = get_current_unix_time()
+            time_delta = current_time - RUNNING_START_TIME
 
-        if time_delta % runtime_interval == 0:
-            update_data_to_database(COMPONENT_NAME, status_running_time(time_delta))
+            if time_delta % runtime_interval == 0:
+                firebase.update_data_to_database(COMPONENT_NAME, status_running_time(time_delta))
