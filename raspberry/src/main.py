@@ -3,7 +3,7 @@ Main program to execute other components
 '''
 
 from time import sleep
-from threading import Thread, Event
+from threading import Thread
 import firebase
 import audio
 import motion_sensor

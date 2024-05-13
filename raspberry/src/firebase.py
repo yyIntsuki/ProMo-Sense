@@ -30,7 +30,6 @@ CURRENT_VOLUME_CHANGED = False
 
 def get_audio_samples():
     '''Gets file names from Firebase storage path and downloads them for current user'''
-    global CURRENT_ACTIVE_USER
     path = f'{STORAGE_REMOTE_PATH}/{CURRENT_ACTIVE_USER}'
     name_list = storage.bucket.list_blobs(prefix=path)
     
