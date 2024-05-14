@@ -99,10 +99,14 @@ function onMotionSensorChange(callback) {
 }
 
 /* Code-lock module */
+
 const codeLockRef = ref(database, "data/code_lock");
 function setManualLock(activated) {
-    update(codeLockRef, { activated, timestamp: Math.floor(Date.now() / 1000) })
-        .catch(error => console.error("Failed to set manual lock status:", error));
+return update(codeLockRef, { activated, timestamp: Math.floor(Date.now() / 1000) })
+.catch(error => {
+    console.error("Failed to set manual lock status:", error);
+
+});
 }
 
 function setManualLockTime(duration) {
