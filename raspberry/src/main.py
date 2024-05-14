@@ -8,10 +8,12 @@ from utils import get_current_unix_time, convert_to_str_time
 import firebase
 import audio
 import motion_sensor
+import code_lock
 
 try:
-    # Parallelize motion sensor loop
+    # Parallelize programs
     motion_sensor_thread = Thread(target=motion_sensor.main)
+    code_lock_thread = Thread(target=code_lock.main)
     
     # Initialize database and storage connections
     firebase.listen_for_changes('user')
@@ -33,7 +35,10 @@ try:
     
     # Initialize motion sensor
     motion_sensor.initialize()
+    
+    # Start threads
     motion_sensor_thread.start()
+    code_lock_thread.start()
     
     # Detect and handle user changes
     while True:
