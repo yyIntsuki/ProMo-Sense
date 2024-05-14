@@ -52,7 +52,7 @@ try:
             firebase.CURRENT_VOLUME_CHANGED = False
             audio.set_volume(firebase.CURRENT_AUDIO_VOLUME)
 
-        if firebase.CURRENT_LOCK_CHANGED:
+        if firebase.CURRENT_LOCK_CHANGED and firebase.CURRENT_LOCK_STATUS:
             firebase.CURRENT_LOCK_CHANGED = False
             if firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION > get_current_unix_time():
                 print(f'''Code-lock is active!
