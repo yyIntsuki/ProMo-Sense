@@ -11,6 +11,10 @@ export default function App() {
     const [audioUrls, setAudioUrls] = useState([]);
     const [motionSensorData, setMotionSensorData] = useState(null);
     const [lockTime, setLockTime] = useState(5);
+    const [remainingTime, setRemainingTime] = useState(null); // count down börjat
+    const [isLocked, setIsLocked] = useState(false);
+
+
     const audioRef = useRef(null);
 
     useEffect(() => {
@@ -37,6 +41,21 @@ export default function App() {
             onMotionSensorChange((data) => { setMotionSensorData(data); });
         }
     }, [currentUser, selectedAudioUrl, volume]);
+
+    useEffect(() => {
+        if (remainingTime !== null && remainingTime > 0) {
+            const timer = setInterval(() => {
+                setRemainingTime(prev => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+            return () => clearInterval(timer);
+        }
+    }, [remainingTime]);
 
     function increaseVolume(event) {
         event.preventDefault();
@@ -95,12 +114,26 @@ export default function App() {
         } else { console.error("No file selected or user not logged in!"); }
     }
 
-    function handleManualLock(event) {
-        event.preventDefault();
-        setManualLock(true)
-            .then(() => { console.log("Manual lock activated."); })
-            .catch((error) => { console.error("Error activating manual lock:", error); });
-    }
+    
+    
+   function handleManualLock(event) {
+       event.preventDefault();
+    const newLockStatus = !isLocked;
+    setManualLock(newLockStatus)  
+        .then(() => {
+            console.log(`Manual lock ${newLockStatus ? "activated" : "deactivated"}.`);
+            setIsLocked(newLockStatus);
+            if (newLockStatus) {
+                setRemainingTime(lockTime * 60); 
+            } else {
+                setRemainingTime(null); 
+            }
+        })
+        .catch((error) => {
+            console.error("Error changing manual lock status:", error);
+        });
+}
+
 
     function handleManualLockTimeInput(event) {
         event.preventDefault();
@@ -110,9 +143,16 @@ export default function App() {
     function handleManualLockTime(event) {
         event.preventDefault();
         setManualLockTime(lockTime)
-            .then(() => { console.log(`Manual lock time set to ${lockTime} minutes.`); })
-            .catch((error) => { console.error("Error setting manual lock time:", error); });
+            .then(() => { 
+                console.log(`Manual lock time set to ${lockTime} minutes.`);
+                setRemainingTime(lockTime * 60);  
+            })
+            .catch((error) => { 
+                console.error("Error setting manual lock time:", error);
+            });
     }
+    
+    
 
     return (
         <>
@@ -135,9 +175,9 @@ export default function App() {
                         </div>
                         <div className="item">
                             <h3 className="item_title">Code-lock</h3>
-                            <p>STATUS: <span>INACTIVE</span></p>
-                            <p>REMAINING TIME: <span>-</span></p>
-                            <p>LOCK-TIME: <span>5 (MIN)</span></p>
+                            <p>STATUS: <span>{remainingTime > 0 ? 'ACTIVE' : 'INACTIVE'}</span></p>
+                            <p>REMAINING TIME: <span>{remainingTime !== null ? `${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}` : '-'}</span></p>
+                            <p>LOCK-TIME: <span>{lockTime} (MIN)</span></p>
                         </div>
                     </div>
                     <div className='app_category'>
@@ -173,11 +213,12 @@ export default function App() {
                         </div>
                         <div className="item">
                             <h3 className="item_title">Code-lock</h3>
+                           
                             <div className="item_detail">
-                                <p>MANUAL LOCK: </p>
-                                <div className="detail_row">
-                                    <button onClick={handleManualLock}>ACTIVATE</button>
-                                </div>
+                           <p>MANUAL LOCK:</p>
+                          <div className="detail_row">
+                          <button onClick={handleManualLock}>{isLocked ? "DEACTIVATE" : "ACTIVATE"}</button>
+                          </div>
                             </div>
                             <div className="item_detail">
                                 <p>LOCK-TIME:</p>
@@ -195,4 +236,5 @@ export default function App() {
             }
         </>
     );
+
 }
