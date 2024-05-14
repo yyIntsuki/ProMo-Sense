@@ -10,7 +10,7 @@ export default function App() {
     const [volume, setVolume] = useState(0.5);
     const [audioUrls, setAudioUrls] = useState([]);
     const [motionSensorData, setMotionSensorData] = useState(null);
-    const [lockTime, setLockTime] = useState(5);
+    const [lockTime, setLockTime] = useState(null);
     const [remainingTime, setRemainingTime] = useState(null);
     const [isLocked, setIsLocked] = useState(false);
     const [dbLockTime, setDbLockTime] = useState(0);
@@ -39,23 +39,29 @@ export default function App() {
 
             onMotionSensorChange((data) => { setMotionSensorData(data); });
 
-            const unsubscribeLockTime = onLockTimeChange((lockTime) => { setDbLockTime(lockTime); });
-            return () => { if (unsubscribeLockTime) { unsubscribeLockTime(); } };
+            const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
+                setDbLockTime(lockTimeFromDb);
+                if (lockTime === null) {  
+                    setLockTime(lockTimeFromDb);
+                }
+            });
+            return () => { unsubscribeLockTime?.(); };
         }
+    }, [currentUser, selectedAudioUrl, volume, lockTime]);
 
+    useEffect(() => {
+        let timer;
         if (remainingTime !== null && remainingTime > 0) {
-            const timer = setInterval(() => {
-                setRemainingTime(prev => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        return 0;
-                    }
-                    return prev - 1;
-                });
+            timer = setInterval(() => {
+                setRemainingTime(prev => (prev !== null && prev > 0 ? prev - 1 : 0));
             }, 1000);
-            return () => clearInterval(timer);
         }
-    }, [currentUser, selectedAudioUrl, volume, remainingTime]);
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+        };
+    }, [remainingTime]);
 
     function increaseVolume(event) {
         event.preventDefault();
@@ -97,11 +103,6 @@ export default function App() {
         } else { alert('Please select a sound first!'); }
     }
 
-    // function playAudio(event) {
-    //     event.preventDefault();
-    //     if (audioRef.current) { audioRef.current.play(); }
-    // }
-
     function handleFileUpload(event) {
         event.preventDefault();
         const file = event.target.files[0];
@@ -129,18 +130,25 @@ export default function App() {
 
     function handleManualLockTimeInput(event) {
         event.preventDefault();
-        setLockTime(event.target.value);
+        const newLockTime = event.target.value;
+        setLockTime(newLockTime);
     }
-
+    
     function handleManualLockTime(event) {
         event.preventDefault();
-        setManualLockTime(lockTime)
-            .then(() => {
-                console.log(`Manual lock time set to ${lockTime} minutes.`);
-                setRemainingTime(lockTime * 60);
-            })
-            .catch((error) => { console.error('Error setting manual lock time:', error); });
+        const lockTimeValue = parseInt(lockTime, 10);
+        if (!isNaN(lockTimeValue)) {
+            setManualLockTime(lockTimeValue)
+                .then(() => {
+                    console.log(`Manual lock time set to ${lockTimeValue} minutes.`);
+                    setRemainingTime(lockTimeValue * 60); 
+                })
+                .catch((error) => { console.error('Error setting manual lock time:', error); });
+        } else {
+            console.error('Invalid lock time');
+        }
     }
+
 
 
     return (
@@ -227,3 +235,4 @@ export default function App() {
     );
 
 }
+

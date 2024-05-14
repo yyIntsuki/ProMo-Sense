@@ -113,7 +113,7 @@ function onLockTimeChange(callback) {
     const lockTimeRef = ref(database, 'data/code_lock/duration');
     const unsubscribe = onValue(lockTimeRef, (snapshot) => {
         if (snapshot.exists()) {
-            const lockTime = snapshot.val();
+            const lockTime = parseInt(snapshot.val(), 10);
             callback(lockTime);
         } else { console.log('No lock time data found.'); }
     }, (error) => { console.error('Failed to fetch lock time:', error); });
