@@ -114,9 +114,29 @@ function setManualLockTime(duration) {
         .catch(error => console.error("Failed to set manual lock time:", error));
 }
 
+
+
+    function onLockTimeChange(callback) {
+        const lockTimeRef = ref(database, "data/code_lock/duration");
+        const unsubscribe = onValue(lockTimeRef, (snapshot) => {
+            if (snapshot.exists()) {
+                const lockTime = snapshot.val();
+                callback(lockTime); 
+            } else {
+                console.log("No lock time data found.");  
+            }
+        }, (error) => {
+            console.error("Failed to fetch lock time:", error);
+        });
+    
+        return unsubscribe; 
+    }
+
+  
+
 export {
     auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult,
     signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase,
     onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange,
-    setManualLock, setManualLockTime, setChosenAudioFile, onChosenAudioChange
+    setManualLock, setManualLockTime, setChosenAudioFile, onChosenAudioChange, onLockTimeChange
 };

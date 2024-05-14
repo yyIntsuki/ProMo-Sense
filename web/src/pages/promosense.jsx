@@ -2,7 +2,7 @@ import "../css/common.css";
 import "../css/pages.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import { UserContext } from "../contexts/userContext";
-import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile } from "../firebaseModel";
+import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile,onLockTimeChange } from "../firebaseModel";
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -14,6 +14,7 @@ export default function App() {
     const [remainingTime, setRemainingTime] = useState(null); // count down börjat
     const [isLocked, setIsLocked] = useState(false);
     const [timerId, setTimerId] = useState(null);
+    const [dbLockTime, setDbLockTime] = useState(0);
 
 
     const audioRef = useRef(null);
@@ -41,9 +42,21 @@ export default function App() {
 
             onMotionSensorChange((data) => { setMotionSensorData(data); });
         }
-    }, [currentUser, selectedAudioUrl, volume]);
 
-    useEffect(() => {
+
+        if (currentUser) {
+        
+            const avsluta = onLockTimeChange((lockTime) => {
+                setDbLockTime(lockTime);  
+            });
+            return () => {
+                if (avsluta) {
+                    avsluta();  
+                }
+            };
+        }
+
+
         if (remainingTime !== null && remainingTime > 0) {
             const timer = setInterval(() => {
                 setRemainingTime(prev => {
@@ -56,7 +69,12 @@ export default function App() {
             }, 1000);
             return () => clearInterval(timer);
         }
-    }, [remainingTime]);
+        
+    }, [currentUser, selectedAudioUrl, volume,currentUser, remainingTime]);
+
+   
+   
+    
 
     function increaseVolume(event) {
         event.preventDefault();
@@ -179,7 +197,7 @@ export default function App() {
                             <h3 className="item_title">Code-lock</h3>
                             <p>STATUS: <span>{remainingTime > 0 ? 'ACTIVE' : 'INACTIVE'}</span></p>
                             <p>REMAINING TIME: <span>{remainingTime !== null ? `${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}` : '-'}</span></p>
-                            <p>LOCK-TIME: <span>{lockTime} (MIN)</span></p>
+                            <p>LOCK-TIME: <span>{dbLockTime} (MIN)</span></p>
                         </div>
                     </div>
                     <div className='app_category'>
