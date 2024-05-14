@@ -1,6 +1,6 @@
 export default function Project() {
 	return (
-		<div className="project_wrapper">
+		<div className='project_wrapper'>
 			<h1>About the project</h1>
 			<p>The ProMo-Sense project aims for the development and implementation of a proximity sensor alarm system. The system is designed to enhance security and area-monitoring by detecting the presence of individuals within a specified environment.</p>
 			<p>The proximity sensor is equipped with a code-lock and access card mechanism to control and authorize entry. In simpler terms, this means that individuals seeking access must first scan the tag and input a specific code to disable the alarm for a specific time period.</p>
