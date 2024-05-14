@@ -8,8 +8,8 @@ void timeStatusCB(uint32_t &ts);
 void printResult(AsyncResult &aResult);
 void printError(int code, const String &msg);
 
-DefaultNetwork network;                                                                           // initilize with boolean parameter to enable/disable network reconnection
-ServiceAuth sa_auth(timeStatusCB, FIREBASE_CLIENT_EMAIL, FIREBASE_PROJECT_ID, PRIVATE_KEY, 3000); // expire period in seconds (<3600)
+DefaultNetwork network; // initilize with boolean parameter to enable/disable network reconnection
+ServiceAuth sa_auth(timeStatusCB, FIREBASE_CLIENT_EMAIL, FIREBASE_PROJECT_ID, PRIVATE_KEY, 3000 /* expire period in seconds (<3600) */);
 
 WiFiClientSecure ssl_client;
 
