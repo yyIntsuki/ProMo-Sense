@@ -13,6 +13,7 @@ export default function App() {
     const [lockTime, setLockTime] = useState(5);
     const [remainingTime, setRemainingTime] = useState(null); // count down börjat
     const [isLocked, setIsLocked] = useState(false);
+    const [timerId, setTimerId] = useState(null);
 
 
     const audioRef = useRef(null);
@@ -150,8 +151,9 @@ export default function App() {
             .catch((error) => { 
                 console.error("Error setting manual lock time:", error);
             });
+
+            
     }
-    
     
 
     return (
@@ -223,7 +225,7 @@ export default function App() {
                             <div className="item_detail">
                                 <p>LOCK-TIME:</p>
                                 <div className="detail_row">
-                                    <input className="lock_time_input" type="number" onChange={handleManualLockTimeInput} value={lockTime} step="1" />
+                                <input className="lock_time_input" type="number" onChange={handleManualLockTimeInput} value={lockTime} min="1" step="1" />
                                     <p>(MIN)</p>
                                     <button onClick={handleManualLockTime}>APPLY</button>
                                 </div>
