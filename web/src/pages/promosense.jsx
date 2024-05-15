@@ -47,7 +47,7 @@ export default function App() {
             });
             return () => { unsubscribeLockTime?.(); };
         }
-    }, [currentUser, selectedAudioUrl, volume, lockTime]);
+    }, [currentUser, selectedAudioUrl]);
 
     useEffect(() => {
         let timer;
