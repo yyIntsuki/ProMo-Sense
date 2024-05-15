@@ -10,7 +10,7 @@ export default function App() {
     const [volume, setVolume] = useState(0.5);
     const [audioUrls, setAudioUrls] = useState([]);
     const [motionSensorData, setMotionSensorData] = useState(null);
-    const [lockTime, setLockTime] = useState(null);
+    const [lockTime, setLockTime] = useState(0);
     const [remainingTime, setRemainingTime] = useState(null);
     const [isLocked, setIsLocked] = useState(false);
     const [dbLockTime, setDbLockTime] = useState(0);
@@ -41,7 +41,7 @@ export default function App() {
 
             const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
                 setDbLockTime(lockTimeFromDb);
-                if (lockTime === null) {  
+                if (lockTime === 0) {  
                     setLockTime(lockTimeFromDb);
                 }
             });
@@ -220,7 +220,7 @@ export default function App() {
                             <div className='item_detail'>
                                 <p>LOCK-TIME:</p>
                                 <div className='detail_row'>
-                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime} min='1' step='1' />
+                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? "" :lockTime} min='1' step='1' />
                                     <p>(MIN)</p>
                                     <button onClick={handleManualLockTime}>APPLY</button>
                                 </div>

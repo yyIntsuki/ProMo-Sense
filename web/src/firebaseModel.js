@@ -105,9 +105,16 @@ function setManualLock(activated) {
 }
 
 function setManualLockTime(duration) {
-    update(codeLockRef, { duration })
-        .catch((error) => console.error('Failed to set manual lock time:', error));
+    return update(codeLockRef, { duration })
+        .then(() => {
+            console.log('Manual lock time set successfully.');
+        })
+        .catch((error) => {
+            console.error('Failed to set manual lock time:', error);
+            throw error;
+        });
 }
+
 
 function onLockTimeChange(callback) {
     const lockTimeRef = ref(database, 'data/code_lock/duration');
