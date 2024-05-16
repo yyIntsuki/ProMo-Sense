@@ -24,30 +24,45 @@ export default function App() {
             });
 
             getAudioFiles(currentUser.uid)
-                .then(urls => {
-                    setAudioUrls(urls);
-                    if (selectedAudioUrl) {
-                        const audioData = urls.find(audio => audio.url === selectedAudioUrl);
-                        if (audioData && audioRef.current) {
-                            audioRef.current.src = audioData.url;
-                            audioRef.current.addEventListener('loadedmetadata', () => { audioRef.current.volume = volume; });
-                            audioRef.current.load();
-                        }
+            .then(urls => {
+                const audioData = urls.map(fileData => {
+                    let name = fileData.name.replace(/\.[^/.]+$/, "");
+                    if (name.length > 16) {
+                        name = name.substring(0, 16) + '...';
                     }
-                })
-                .catch(error => { console.error('Error loading audio files:', error); });
-
-            onMotionSensorChange((data) => { setMotionSensorData(data); });
-
-            const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
-                setDbLockTime(lockTimeFromDb);
-                if (lockTime === 0) {  
-                    setLockTime(lockTimeFromDb);
+                    return { ...fileData, name };
+                });
+                setAudioUrls(audioData);
+                if (selectedAudioUrl) {
+                    const audio = audioData.find(audio => audio.url === selectedAudioUrl);
+                    if (audio && audioRef.current) {
+                        audioRef.current.src = audio.url;
+                        audioRef.current.addEventListener('loadedmetadata', () => {
+                            audioRef.current.volume = volume;
+                        });
+                        audioRef.current.load();
+                    }
                 }
+            })
+            .catch(error => {
+                console.error('Error loading audio files:', error);
             });
-            return () => { unsubscribeLockTime?.(); };
-        }
-    }, [currentUser, selectedAudioUrl]);
+
+        onMotionSensorChange((data) => {
+            setMotionSensorData(data);
+        });
+
+        const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
+            setDbLockTime(lockTimeFromDb);
+            if (lockTime === 0) {
+                setLockTime(lockTimeFromDb);
+            }
+        });
+        return () => {
+            unsubscribeLockTime?.();
+        };
+    }
+}, [currentUser, selectedAudioUrl]);
 
     useEffect(() => {
         let timer;
