@@ -20,18 +20,20 @@ def main():
     '''Main code-lock program'''
     # Due to signal noise, we have to set a threshold to not activate the code-lock on accident
     active_time = 0
-    active_time_threshold = 20
+    active_time_threshold = 10
     
     while True:
         # Read the state of the GPIO pin
         input_state = GPIO.input(CODELOCK_PIN_OUT)
         if input_state == GPIO.HIGH and active_time < active_time_threshold:
             active_time += .1
+            # print(f'Active time: {active_time}')
         if input_state == GPIO.LOW and active_time > 0:
             active_time = 0
             
         # Update firebase if code-lock was active for longer than a specific time.
         if active_time >= active_time_threshold and get_current_unix_time() > firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION:
+            print('Physical code-lock activated.')
             firebase.update_data_to_database(COMPONENT_NAME, status_active())
             sleep(5)
 

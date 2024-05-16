@@ -78,7 +78,7 @@ def main():
     
     # Detection loop
     while True:
-        if get_current_unix_time() > firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION:
+        if firebase.CURRENT_LOCK_STATUS is False or get_current_unix_time() > firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION:
             current_state = pir.motion_detected
 
             if current_state is True and previous_state is False:

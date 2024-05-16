@@ -4,7 +4,7 @@ Main program to execute other components
 
 from time import sleep
 from threading import Thread
-from utils import get_current_unix_time, convert_to_str_time
+from utils import get_current_unix_time, convert_to_str_time, check_path_exist
 import firebase
 import audio
 import motion_sensor
@@ -46,6 +46,9 @@ try:
             firebase.CURRENT_USER_CHANGED = False
             firebase.CURRENT_SAMPLE_CHANGED = False
             firebase.get_audio_samples()
+            while(check_path_exist(f'{firebase.STORAGE_LOCAL_PATH}/{firebase.CURRENT_ACTIVE_USER}/{firebase.CURRENT_AUDIO_SAMPLE}') is False):
+                print('Waiting for sample to download...')
+                sleep(.5)
             audio.load_audio(firebase.STORAGE_LOCAL_PATH, firebase.CURRENT_ACTIVE_USER, firebase.CURRENT_AUDIO_SAMPLE)
 
         if firebase.CURRENT_VOLUME_CHANGED:
