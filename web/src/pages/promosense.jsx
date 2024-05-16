@@ -41,9 +41,7 @@ export default function App() {
 
             const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
                 setDbLockTime(lockTimeFromDb);
-                if (lockTime === 0) {  
-                    setLockTime(lockTimeFromDb);
-                }
+                if (lockTime === 0) { setLockTime(lockTimeFromDb); }
             });
             return () => { unsubscribeLockTime?.(); };
         }
@@ -57,9 +55,7 @@ export default function App() {
             }, 1000);
         }
         return () => {
-            if (timer) {
-                clearInterval(timer);
-            }
+            if (timer) { clearInterval(timer); }
         };
     }, [remainingTime]);
 
@@ -133,7 +129,7 @@ export default function App() {
         const newLockTime = event.target.value;
         setLockTime(newLockTime);
     }
-    
+
     function handleManualLockTime(event) {
         event.preventDefault();
         const lockTimeValue = parseInt(lockTime, 10);
@@ -141,15 +137,11 @@ export default function App() {
             setManualLockTime(lockTimeValue)
                 .then(() => {
                     console.log(`Manual lock time set to ${lockTimeValue} minutes.`);
-                    setRemainingTime(lockTimeValue * 60); 
+                    setRemainingTime(lockTimeValue * 60);
                 })
                 .catch((error) => { console.error('Error setting manual lock time:', error); });
-        } else {
-            console.error('Invalid lock time');
-        }
+        } else { console.error('Invalid lock time'); }
     }
-
-
 
     return (
         <>
@@ -220,7 +212,7 @@ export default function App() {
                             <div className='item_detail'>
                                 <p>LOCK-TIME:</p>
                                 <div className='detail_row'>
-                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? "" :lockTime} min='1' step='1' />
+                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? '-' : lockTime} min='1' step='1' />
                                     <p>(MIN)</p>
                                     <button onClick={handleManualLockTime}>APPLY</button>
                                 </div>
