@@ -2,7 +2,7 @@ import '../css/common.css';
 import '../css/pages.css';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { UserContext } from '../contexts/userContext';
-import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile, onLockTimeChange } from '../firebaseModel';
+import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile, onLockTimeChange,onLockStatusChange } from '../firebaseModel';
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -22,7 +22,7 @@ export default function App() {
                 setVolume(value);
                 if (audioRef.current) { audioRef.current.volume = value; }
             });
-
+    
             getAudioFiles(currentUser.uid)
                 .then(urls => {
                     setAudioUrls(urls);
@@ -38,19 +38,25 @@ export default function App() {
                 .catch(error => {
                     console.error('Error loading audio files:', error);
                 });
-
+    
             onMotionSensorChange((data) => {
                 setMotionSensorData(data);
             });
-
+    
             const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
                 setDbLockTime(lockTimeFromDb);
                 if (lockTime === 0) {
                     setLockTime(lockTimeFromDb);
                 }
             });
+    
+            const unsubscribeLockStatus = onLockStatusChange((status) => {
+                setIsLocked(status);
+            });
+    
             return () => {
                 unsubscribeLockTime?.();
+                unsubscribeLockStatus?.();
             };
         }
     }, [currentUser, selectedAudioUrl]);
@@ -185,11 +191,11 @@ export default function App() {
                             }
                         </div>
                         <div className='item'>
-                            <h3 className='item_title'>Code-lock</h3>
-                            <p>STATUS: <span>{remainingTime > 0 ? 'ACTIVE' : 'INACTIVE'}</span></p>
-                            <p>REMAINING TIME: <span>{remainingTime !== null ? `${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}` : '-'}</span></p>
-                            <p>LOCK-TIME: <span>{dbLockTime} (MIN)</span></p>
-                        </div>
+    <h3 className='item_title'>Code-lock</h3>
+    <p>STATUS: <span>{isLocked ? 'ACTIVE' : 'INACTIVE'}</span></p>
+    <p>REMAINING TIME: <span>{remainingTime !== null ? `${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}` : '-'}</span></p>
+    <p>LOCK-TIME: <span>{dbLockTime} (MIN)</span></p>
+</div>
                     </div>
                     <div className='app_category'>
                         <h1>Control</h1>

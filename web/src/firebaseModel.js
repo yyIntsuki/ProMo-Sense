@@ -119,11 +119,29 @@ function onLockTimeChange(callback) {
         } else { console.log('No lock time data found.'); }
     }, (error) => { console.error('Failed to fetch lock time:', error); });
     return unsubscribe;
+
+    
 }
+
+
+
+function onLockStatusChange(callback) {
+    onValue(codeLockRef, (snapshot) => {
+        if (snapshot.exists()) {
+            callback(snapshot.val().activated);
+        } else {
+            callback(false); // Default to false if no data exists
+        }
+    }, (error) => {
+        console.error('Failed to fetch lock status:', error);
+        callback(false);
+    });
+}
+
 
 export {
     auth, provider, signInWithPopup, signInWithRedirect, getRedirectResult,
     signOut, onAuthStateChanged, uploadFile, setUserInDatabase, setActiveUserOnDatabase,
     onVolumeChange, setVolumeInDatabase, getAudioFiles, onMotionSensorChange,
-    setManualLock, setManualLockTime, setChosenAudioFile, onChosenAudioChange, onLockTimeChange
+    setManualLock, setManualLockTime, setChosenAudioFile, onChosenAudioChange, onLockTimeChange,onLockStatusChange
 };
