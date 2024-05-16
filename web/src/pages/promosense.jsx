@@ -24,45 +24,36 @@ export default function App() {
             });
 
             getAudioFiles(currentUser.uid)
-            .then(urls => {
-                const audioData = urls.map(fileData => {
-                    let name = fileData.name.replace(/\.[^/.]+$/, "");
-                    if (name.length > 16) {
-                        name = name.substring(0, 16) + '...';
+                .then(urls => {
+                    setAudioUrls(urls);
+                    if (selectedAudioUrl) {
+                        const audioData = urls.find(audio => audio.url === selectedAudioUrl);
+                        if (audioData && audioRef.current) {
+                            audioRef.current.src = audioData.url;
+                            audioRef.current.addEventListener('loadedmetadata', () => { audioRef.current.volume = volume; });
+                            audioRef.current.load();
+                        }
                     }
-                    return { ...fileData, name };
+                })
+                .catch(error => {
+                    console.error('Error loading audio files:', error);
                 });
-                setAudioUrls(audioData);
-                if (selectedAudioUrl) {
-                    const audio = audioData.find(audio => audio.url === selectedAudioUrl);
-                    if (audio && audioRef.current) {
-                        audioRef.current.src = audio.url;
-                        audioRef.current.addEventListener('loadedmetadata', () => {
-                            audioRef.current.volume = volume;
-                        });
-                        audioRef.current.load();
-                    }
-                }
-            })
-            .catch(error => {
-                console.error('Error loading audio files:', error);
+
+            onMotionSensorChange((data) => {
+                setMotionSensorData(data);
             });
 
-        onMotionSensorChange((data) => {
-            setMotionSensorData(data);
-        });
-
-        const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
-            setDbLockTime(lockTimeFromDb);
-            if (lockTime === 0) {
-                setLockTime(lockTimeFromDb);
-            }
-        });
-        return () => {
-            unsubscribeLockTime?.();
-        };
-    }
-}, [currentUser, selectedAudioUrl]);
+            const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
+                setDbLockTime(lockTimeFromDb);
+                if (lockTime === 0) {
+                    setLockTime(lockTimeFromDb);
+                }
+            });
+            return () => {
+                unsubscribeLockTime?.();
+            };
+        }
+    }, [currentUser, selectedAudioUrl]);
 
     useEffect(() => {
         let timer;
@@ -145,14 +136,14 @@ export default function App() {
             })
             .catch((error) => { console.error('Error changing manual lock status:', error); });
     }
-    
+
 
     function handleManualLockTimeInput(event) {
         event.preventDefault();
         const newLockTime = event.target.value;
         setLockTime(newLockTime);
     }
-    
+
     function handleManualLockTime(event) {
         event.preventDefault();
         const lockTimeValue = parseInt(lockTime, 10);
@@ -166,9 +157,13 @@ export default function App() {
             console.error('Invalid lock time');
         }
     }
-    
 
-
+    function trimString(string) {
+        if (string.length > 16) {
+            string = string.substring(0, 16) + '...'
+        }
+        return string
+    }
 
     return (
         <>
@@ -206,7 +201,7 @@ export default function App() {
                                 <div className='detail_row'>
                                     <select className='audio_select' onChange={handleAudioSelection} value={selectedAudioUrl || ''}>
                                         <option value=''>Select a sound</option>
-                                        {audioUrls.map((fileData, index) => (<option key={index} value={fileData.url}>{fileData.name}</option>))}
+                                        {audioUrls.map((fileData, index) => (<option key={index} value={fileData.url}>{trimString(fileData.name)}</option>))}
                                     </select>
                                     <button onClick={chooseAudio}>CHOOSE</button>
                                 </div>
@@ -239,7 +234,7 @@ export default function App() {
                             <div className='item_detail'>
                                 <p>LOCK-TIME:</p>
                                 <div className='detail_row'>
-                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? "" :lockTime} min='1' step='1' />
+                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? "" : lockTime} min='1' step='1' />
                                     <p>(MIN)</p>
                                     <button onClick={handleManualLockTime}>APPLY</button>
                                 </div>
