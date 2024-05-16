@@ -137,11 +137,15 @@ export default function App() {
             .then(() => {
                 console.log(`Manual lock ${newLockStatus ? 'activated' : 'deactivated'}.`);
                 setIsLocked(newLockStatus);
-                if (newLockStatus) { setRemainingTime(lockTime * 60); }
-                else { setRemainingTime(null); }
+                if (newLockStatus) {
+                    setRemainingTime(lockTime * 60);
+                } else {
+                    setRemainingTime(null);
+                }
             })
             .catch((error) => { console.error('Error changing manual lock status:', error); });
     }
+    
 
     function handleManualLockTimeInput(event) {
         event.preventDefault();
@@ -156,13 +160,13 @@ export default function App() {
             setManualLockTime(lockTimeValue)
                 .then(() => {
                     console.log(`Manual lock time set to ${lockTimeValue} minutes.`);
-                    setRemainingTime(lockTimeValue * 60); 
                 })
                 .catch((error) => { console.error('Error setting manual lock time:', error); });
         } else {
             console.error('Invalid lock time');
         }
     }
+    
 
 
 
@@ -250,4 +254,3 @@ export default function App() {
     );
 
 }
-
