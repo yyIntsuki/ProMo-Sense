@@ -46,7 +46,8 @@ try:
             firebase.CURRENT_USER_CHANGED = False
             firebase.CURRENT_SAMPLE_CHANGED = False
             firebase.get_audio_samples()
-            while(check_path_exist(f'{firebase.STORAGE_LOCAL_PATH}/{firebase.CURRENT_ACTIVE_USER}/{firebase.CURRENT_AUDIO_SAMPLE}') is False):
+            # while(check_path_exist(f'{firebase.STORAGE_LOCAL_PATH}/{firebase.CURRENT_ACTIVE_USER}/{firebase.CURRENT_AUDIO_SAMPLE}') is False):
+            while(check_path_exist(f'{firebase.STORAGE_LOCAL_PATH}/{firebase.CURRENT_AUDIO_SAMPLE}') is False):
                 print('Waiting for sample to download...')
                 sleep(.5)
             audio.load_audio(firebase.STORAGE_LOCAL_PATH, firebase.CURRENT_ACTIVE_USER, firebase.CURRENT_AUDIO_SAMPLE)
@@ -55,7 +56,7 @@ try:
             firebase.CURRENT_VOLUME_CHANGED = False
             audio.set_volume(firebase.CURRENT_AUDIO_VOLUME)
 
-        if firebase.CURRENT_LOCK_CHANGED and firebase.CURRENT_LOCK_STATUS:
+        if firebase.CURRENT_LOCK_CHANGED:
             firebase.CURRENT_LOCK_CHANGED = False
             if firebase.CURRENT_LOCK_TIME + firebase.CURRENT_LOCK_DURATION > get_current_unix_time():
                 print(f'''Code-lock is active!

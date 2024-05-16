@@ -13,7 +13,8 @@ def initialize():
 
 def load_audio(root_path, user, file_name):
     '''Load a file into the pygame mixer music module'''
-    sample_path = f'{root_path}/{user}/{file_name}'
+    # sample_path = f'{root_path}/{user}/{file_name}'
+    sample_path = f'{root_path}/{file_name}'
     if check_path_exist(sample_path):
         mixer.music.load(sample_path)
         print(f'Sample loaded: {sample_path}')

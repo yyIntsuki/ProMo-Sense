@@ -44,9 +44,11 @@ def get_audio_samples():
     for file in name_list:
         user_folder = file.name.split('/')[1]
         file_name = file.name.split('/')[2]
-        full_path = f'{STORAGE_LOCAL_PATH}/{user_folder}/{file_name}'
+        # full_path = f'{STORAGE_LOCAL_PATH}/{user_folder}/{file_name}'
+        full_path = f'{STORAGE_LOCAL_PATH}/{file_name}'
 
-        create_folder(f'{STORAGE_LOCAL_PATH}/{user_folder}')
+        # create_folder(f'{STORAGE_LOCAL_PATH}/{user_folder}')
+        create_folder(f'{STORAGE_LOCAL_PATH}/')
         if not check_path_exist(full_path):
             file.download_to_filename(full_path)
             print(f'Downloading {full_path}.')
