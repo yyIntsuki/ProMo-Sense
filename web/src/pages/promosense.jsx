@@ -2,7 +2,7 @@ import '../css/common.css';
 import '../css/pages.css';
 import { useState, useRef, useEffect, useContext } from 'react';
 import { UserContext } from '../contexts/userContext';
-import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile, onLockTimeChange,onLockStatusChange } from '../firebaseModel';
+import { getAudioFiles, setVolumeInDatabase, uploadFile, onVolumeChange, onMotionSensorChange, setManualLock, setManualLockTime, setChosenAudioFile, onLockTimeChange, onLockStatusChange } from '../firebaseModel';
 
 export default function App() {
     const { currentUser } = useContext(UserContext);
@@ -22,7 +22,7 @@ export default function App() {
                 setVolume(value);
                 if (audioRef.current) { audioRef.current.volume = value; }
             });
-    
+
             getAudioFiles(currentUser.uid)
                 .then(urls => {
                     setAudioUrls(urls);
@@ -35,25 +35,17 @@ export default function App() {
                         }
                     }
                 })
-                .catch(error => {
-                    console.error('Error loading audio files:', error);
-                });
-    
-            onMotionSensorChange((data) => {
-                setMotionSensorData(data);
-            });
-    
+                .catch((error) => { console.error('Error loading audio files:', error); });
+
+            onMotionSensorChange((data) => { setMotionSensorData(data); });
+
             const unsubscribeLockTime = onLockTimeChange((lockTimeFromDb) => {
                 setDbLockTime(lockTimeFromDb);
-                if (lockTime === 0) {
-                    setLockTime(lockTimeFromDb);
-                }
+                if (lockTime === 0) { setLockTime(lockTimeFromDb); }
             });
-    
-            const unsubscribeLockStatus = onLockStatusChange((status) => {
-                setIsLocked(status);
-            });
-    
+
+            const unsubscribeLockStatus = onLockStatusChange((status) => { setIsLocked(status); });
+
             return () => {
                 unsubscribeLockTime?.();
                 unsubscribeLockStatus?.();
@@ -64,15 +56,9 @@ export default function App() {
     useEffect(() => {
         let timer;
         if (remainingTime !== null && remainingTime > 0) {
-            timer = setInterval(() => {
-                setRemainingTime(prev => (prev !== null && prev > 0 ? prev - 1 : 0));
-            }, 1000);
+            timer = setInterval(() => { setRemainingTime(prev => (prev !== null && prev > 0 ? prev - 1 : 0)); }, 1000);
         }
-        return () => {
-            if (timer) {
-                clearInterval(timer);
-            }
-        };
+        return () => { if (timer) { clearInterval(timer); } };
     }, [remainingTime]);
 
     function increaseVolume(event) {
@@ -99,7 +85,7 @@ export default function App() {
         event.preventDefault();
         const selectedUrl = event.target.value;
         setSelectedAudioUrl(selectedUrl);
-        localStorage.setItem('selectedAudioUrl', selectedUrl); // Save to local storage
+        localStorage.setItem('selectedAudioUrl', selectedUrl);
     }
 
     function chooseAudio(event) {
@@ -134,11 +120,8 @@ export default function App() {
             .then(() => {
                 console.log(`Manual lock ${newLockStatus ? 'activated' : 'deactivated'}.`);
                 setIsLocked(newLockStatus);
-                if (newLockStatus) {
-                    setRemainingTime(lockTime * 60);
-                } else {
-                    setRemainingTime(null);
-                }
+                if (newLockStatus) { setRemainingTime(lockTime * 60); }
+                else { setRemainingTime(null); }
             })
             .catch((error) => { console.error('Error changing manual lock status:', error); });
     }
@@ -155,20 +138,13 @@ export default function App() {
         const lockTimeValue = parseInt(lockTime, 10);
         if (!isNaN(lockTimeValue)) {
             setManualLockTime(lockTimeValue)
-                .then(() => {
-                    console.log(`Manual lock time set to ${lockTimeValue} minutes.`);
-                })
+                .then(() => { console.log(`Manual lock time set to ${lockTimeValue} minutes.`); })
                 .catch((error) => { console.error('Error setting manual lock time:', error); });
-        } else {
-            console.error('Invalid lock time');
-        }
+        } else { console.error('Invalid lock time'); }
     }
 
     function trimString(string) {
-        if (string.length > 16) {
-            string = string.substring(0, 16) + '...'
-        }
-        return string
+        return (string.length > 16 ? `${string.substring(0, 16)}...` : string)
     }
 
     return (
@@ -191,11 +167,11 @@ export default function App() {
                             }
                         </div>
                         <div className='item'>
-    <h3 className='item_title'>Code-lock</h3>
-    <p>STATUS: <span>{isLocked ? 'ACTIVE' : 'INACTIVE'}</span></p>
-    <p>REMAINING TIME: <span>{remainingTime !== null ? `${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}` : '-'}</span></p>
-    <p>LOCK-TIME: <span>{dbLockTime} (MIN)</span></p>
-</div>
+                            <h3 className='item_title'>Code-lock</h3>
+                            <p>STATUS: <span>{isLocked ? 'ACTIVE' : 'INACTIVE'}</span></p>
+                            <p>REMAINING TIME: <span>{remainingTime !== null ? `${Math.floor(remainingTime / 60)}:${remainingTime % 60 < 10 ? '0' : ''}${remainingTime % 60}` : '-'}</span></p>
+                            <p>LOCK-TIME: <span>{dbLockTime} (MIN)</span></p>
+                        </div>
                     </div>
                     <div className='app_category'>
                         <h1>Control</h1>
@@ -240,7 +216,7 @@ export default function App() {
                             <div className='item_detail'>
                                 <p>LOCK-TIME:</p>
                                 <div className='detail_row'>
-                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? "" : lockTime} min='1' step='1' />
+                                    <input className='lock_time_input' type='number' onChange={handleManualLockTimeInput} value={lockTime === 0 ? '-' : lockTime} min='1' step='1' />
                                     <p>(MIN)</p>
                                     <button onClick={handleManualLockTime}>APPLY</button>
                                 </div>

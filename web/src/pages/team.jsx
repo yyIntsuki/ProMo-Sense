@@ -62,8 +62,8 @@ export default function Team() {
                         <p>Developer</p>
                     </div>
                     <div className='contact'>
-                        <button onClick={() => handleClickToEmail('daniel.lejonstad@hotmail.com')}>Contact</button>
-                        <small>daniel.lejonstad@hotmail.com</small>
+                        <button onClick={() => handleClickToEmail('dlej@kth.se')}>Contact</button>
+                        <small>dlej@kth.se</small>
                     </div>
                 </div>
             </div>
