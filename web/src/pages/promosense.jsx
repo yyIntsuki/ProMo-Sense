@@ -56,9 +56,26 @@ export default function App() {
     useEffect(() => {
         let timer;
         if (remainingTime !== null && remainingTime > 0) {
-            timer = setInterval(() => { setRemainingTime(prev => (prev !== null && prev > 0 ? prev - 1 : 0)); }, 1000);
+            timer = setInterval(() => {
+                setRemainingTime(prev => {
+                    if (prev !== null && prev > 0) {
+                        return prev - 1;
+                    } else {
+                        clearInterval(timer); 
+                        setManualLock(false);
+                        return 0; 
+                    }
+                });
+            }, 1000);
+        } else if (remainingTime === 0) {
+            setIsLocked(false); 
+            setManualLock(false);
         }
-        return () => { if (timer) { clearInterval(timer); } };
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+        };
     }, [remainingTime]);
 
     function increaseVolume(event) {
